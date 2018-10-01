@@ -1,0 +1,15 @@
+DB IP : 192.168.6.84
+DB USR/PWD : sdv/sdv2016
+
+TSD_HOST : 통계를 수집하는 호스트 리스트
+TSD_SVC : 통계를 수집하는 서비스 리스트
+
+TSD_STAT_HOST : 호스트 통계 
+TSD_STAT_SERVICE : 서비스 통계
+TSD_STAT_HOST_5MIN : 호스트 통계 
+TSD_STAT_SERVICE_5MIN : 서비스 통계
+TSD_STAT_HOST_HOUR : 호스트 통계 
+TSD_STAT_SERVICE_HOUR : 서비스 통계
+TSD_STAT_HOST_DAY : 호스트 통계 
+TSD_STAT_SERVICE_DAY : 서비스 통계
+

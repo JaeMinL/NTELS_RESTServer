@@ -1,0 +1,14 @@
+*.com
+test*
+test*d.com
+test*card.com
+test*card.*m
+test*c*.com
+test*card.*
+test*caud.*
+test*card.???
+test???crd.com
+test????
+test????ddd
+test????duu
+test*d*d.com

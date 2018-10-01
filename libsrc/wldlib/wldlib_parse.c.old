@@ -1,0 +1,338 @@
+#include <stdio.h>
+#include "gendef.h"
+#include "comlib.h"
+#include "comlib.x"
+#include "wldlib.h"
+#include "wldlib.x"
+
+FT_PRIVATE RT_RESULT parse_addFix(WldlibBlkLst *blkLst, CHAR *str, UINT strLen, WldlibChrCb **rt_chrCb, WldlibBlkLst **rt_nxtLst);
+
+FT_PRIVATE RT_RESULT parse_addFix(WldlibBlkLst *blkLst, CHAR *str, UINT strLen, WldlibChrCb **rt_chrCb, WldlibBlkLst **rt_nxtLst)
+{
+    SINT ret = RC_OK;
+    CHAR *cur = NULL;
+    UINT remLen = 0;
+    WldlibBlkLst *curBlk = NULL;
+    WldlibChrCb *chrCb = NULL;
+
+    remLen = strLen;
+    cur = str;
+    curBlk = blkLst;
+
+    (*rt_chrCb) = NULL;
+
+    if(remLen == 0){
+        (*rt_nxtLst) = blkLst;
+        (*rt_chrCb) = NULL;
+        return RC_OK;
+    }
+
+    while(remLen){
+        if(curBlk->strLen == 0){
+            ret = wldlib_blkLstAddFixed(curBlk, cur, remLen, NULL, &chrCb);
+            if(ret != RC_OK){
+                WLD_LOG(WLD_ERR,"Fixed control block add failed(ret=%d, strLen=%d, str=%.*s)\n", ret , remLen, 
+                        remLen, cur);
+                return ret;
+            }
+
+            (*rt_nxtLst) = chrCb->nxtLst;
+            (*rt_chrCb) = chrCb;
+
+            return RC_OK;
+        }
+        else if(curBlk->strLen <= remLen){
+            ret = wldlib_blkLstAddFixed(curBlk, cur, curBlk->strLen, NULL, &chrCb);
+            if(ret != RC_OK){
+                WLD_LOG(WLD_ERR,"Fixed control block add failed(ret=%d, strLen=%d, str=%.*s)\n", ret , remLen, 
+                        remLen, cur);
+                return ret;
+            }
+
+            remLen -= curBlk->strLen;
+            cur += curBlk->strLen;
+
+            curBlk = chrCb->nxtLst;
+            (*rt_chrCb) = chrCb;
+        }
+        else if(remLen < curBlk->strLen){
+            ret = wldlib_blkLstSpilt(curBlk, remLen);
+            if(ret != RC_OK){
+                WLD_LOG(WLD_ERR,"Fixed char spilt failed(ret=%d, remLen=%d)\n",ret, remLen);
+                return ret;
+            }
+
+            ret = wldlib_blkLstAddFixed(curBlk, cur, curBlk->strLen, NULL,  &chrCb);
+            if((ret != RC_OK) &&
+               (ret != WLDERR_CHR_CB_ALREADY_EXIST)){
+                WLD_LOG(WLD_ERR,"Fixed char block add failed(ret=%d, cur=%s, len=%d)\n",ret, cur, curBlk->strLen);
+                return ret;
+            }
+
+            (*rt_nxtLst) = chrCb->nxtLst;
+            (*rt_chrCb) = chrCb;
+
+            return RC_OK;
+
+        }
+    }/* end of while(remStrLen) */
+
+    (*rt_nxtLst) = curBlk;
+
+    return RC_OK;
+}
+
+FT_PUBLIC RT_RESULT wldlib_parseStr(WldlibCb *wldlibCb, CHAR *str, VOID **rt_usrArg)
+{
+    SINT ret = RC_OK;
+    WldlibBlkLst *curBlkLst = NULL;
+    WldlibChrCb *chrCb = NULL;
+    WldlibChrCb *lstWldChrCb = NULL;
+    UINT remLen = 0;
+    UINT wldLen = 0;
+    CHAR *cur = NULL;
+    CHAR *lstCur = NULL;
+
+    cur = str;
+    remLen = comlib_strGetLen(str);
+
+    curBlkLst = wldlibCb->blkLst;
+    if(curBlkLst != NULL){
+        lstWldChrCb = curBlkLst->wldChrSet.lstChrCb;
+    }
+
+    while(1){
+        if(curBlkLst == NULL){
+            break;
+        }
+
+        /* fixed */
+        ret = wldlib_blkLstFindFixed(curBlkLst, cur, &chrCb); 
+        if(ret == RC_OK){
+            if(remLen < curBlkLst->strLen){
+                WLD_LOG(WLD_ERR,"Too short\n");
+                return RC_NOK;
+            }
+            remLen -= curBlkLst->strLen;
+            cur += curBlkLst->strLen;
+            goto goto_nextBlkLst;
+        }
+
+        /* wild */
+        if(curBlkLst->wldChrSet.lstChrCb != NULL){
+            fprintf(stderr,"FIND\n");
+            lstWldChrCb = curBlkLst->wldChrSet.lstChrCb;
+        }
+        wldLen = 0;
+        ret = wldlib_blkLstFindWld(curBlkLst, cur, &lstCur, &chrCb);
+        if(ret == RC_OK){
+            if(lstCur == NULL){
+                wldLen =  remLen; /* for uni wild */
+            }
+            else {
+                wldLen = lstCur - cur;
+            }
+        }
+
+        /* uniWldLL */
+        if(curBlkLst->uniWldLL.nodeCnt != 0){
+            if(curBlkLst->uniWldLL.nodeCnt != 0){
+                ComlibLnkNode *lnkNode = NULL;
+                COM_GET_LNKLST_FIRST(&curBlkLst->uniWldLL, lnkNode);
+                while(1){
+                    chrCb = lnkNode->data;
+
+                    if(wldLen >= chrCb->u.uni.cnt){
+                        if((chrCb->u.uni.cnt+1) <= remLen){
+                            if((chrCb->u.uni.lstChr != '\0') &&
+                               (cur[chrCb->u.uni.cnt] == chrCb->u.uni.lstChr)){
+                                remLen -= (chrCb->u.uni.cnt + 1);
+                                cur += (chrCb->u.uni.cnt + 1);
+                                goto goto_nextBlkLst;
+                            }
+                        }
+                        else if(chrCb->u.uni.cnt == remLen){
+                            if(chrCb->u.uni.lstChr == '\0'){
+                                (*rt_usrArg) = chrCb->usrArg;
+                                return RC_OK;
+                            }
+                        }
+                    }/* end of if(wldLen >= chrCb->u.uni.cnt) */
+
+                    COM_GET_NEXT_NODE(lnkNode);
+                    if(lnkNode == NULL){
+                        break;
+                    }
+                }/* end of while(1) */
+            }/* end of if(curBlkLst->uniWldLL.nodeCnt != 0) */
+        }/* end of if(curBlkLst->uniWldLL.nodeCnt != 0) */
+
+        if(wldLen != 0){
+            remLen -= wldLen;
+            cur = cur + wldLen;
+            goto goto_nextBlkLst;
+        }
+
+        chrCb = NULL;
+        break;
+
+goto_nextBlkLst:
+        curBlkLst = chrCb->nxtLst;
+
+        if(remLen == 0){
+            break;
+        }
+    }/* end of while(1) */
+
+    if(remLen != 0){
+        if(lstWldChrCb != NULL){
+            (*rt_usrArg) = lstWldChrCb->usrArg;
+            return RC_OK;
+        }
+        WLD_LOG(WLD_ERR,"Remain string exist(%d)\n",remLen);
+        return RC_NOK;
+    }
+
+    if(chrCb != NULL){
+        (*rt_usrArg) = chrCb->usrArg;
+        return RC_OK;
+    }
+
+    return RC_NOK;
+}
+
+FT_PUBLIC RT_RESULT wldlib_parseRegRule(WldlibCb *wldlibCb, CHAR *str, UINT strLen, VOID *usrArg)
+{
+    SINT ret = RC_OK;
+    UINT curIdx = 0;
+    UINT wldCnt = 0;
+    UINT uniCnt = 0;
+    CHAR *cur = NULL;
+    UINT remLen = 0;
+    UINT remStrLen = 0;
+    WldlibBlkLst *blkLst = NULL;
+    WldlibChrCb *chrCb = NULL;
+    WldlibChrCb *addChrCb = NULL;
+
+    cur = str;
+    remLen = strLen;
+
+    blkLst = wldlibCb->blkLst;
+    if(blkLst == NULL){
+        ret = wldlib_blkLstMakeFirst(wldlibCb, &blkLst);
+        if(ret != RC_OK){
+            WLD_LOG(WLD_ERR,"First block list make failed(ret=%d)\n",ret);
+            return ret;
+        }
+    }
+
+    while(remLen){
+        curIdx = comlib_strCSpn(cur, "*?");
+        if(cur[curIdx] == '\0'){
+            if(cur == str){
+                /* insert fullMatch */
+            }
+            else { /* last fixed message */
+                remStrLen = &cur[curIdx] - cur;
+
+                ret = parse_addFix(blkLst, cur, remStrLen, &addChrCb, &blkLst);
+                if(ret != RC_OK){
+                    WLD_LOG(WLD_ERR,"Fix list add failed(ret=%d)\n",ret);
+                    return ret;
+                }
+
+                if(addChrCb != NULL){
+                    chrCb = addChrCb;
+                }
+
+                cur+= remStrLen;
+                remLen -= remStrLen;
+                break;
+            }
+        }/* end of if(cur[curIdx] == '\0') */
+
+        /* add string */
+        if(curIdx != 0){
+            remStrLen = &cur[curIdx] - cur;
+
+            while(remStrLen){
+                ret = wldlib_blkLstFindFixed(blkLst, cur, &chrCb);
+                if(ret == RC_OK){
+                    remStrLen -= blkLst->strLen;
+
+                    cur += blkLst->strLen;
+                    blkLst = chrCb->nxtLst;
+                }
+                else {
+                    break;
+                }
+            }/* end of while(1) */
+
+            if((*cur != '*')  && (*cur != '?')){
+                ret = parse_addFix(blkLst, cur, remStrLen, &addChrCb, &blkLst);
+                if(ret != RC_OK){
+                    WLD_LOG(WLD_ERR,"Fix list add failed(ret=%d)\n",ret);
+                    return ret;
+                }
+
+                if(addChrCb != NULL){
+                    chrCb = addChrCb;
+                }
+
+                cur += remStrLen;
+                remLen -= remStrLen;
+            }
+        }/* end of if(curIdx != 0) */
+
+        wldCnt = 0;
+        uniCnt = 0;
+        while(remLen){
+            if((*cur) == '*')         { wldCnt++; }
+            else if((*cur) == '?')    { uniCnt++; }
+            else                      { break;    }
+
+            cur++;
+            remLen--;
+        }/* end of while(1) */
+
+        /* add wildcard */
+        if(wldCnt != 0){
+            ret = wldlib_blkLstAddWld(blkLst, remLen?(*cur):'\0', uniCnt, NULL, &chrCb);
+            if((ret != RC_OK) &&
+               (ret != WLDERR_CHR_CB_ALREADY_EXIST)){
+                WLD_LOG(WLD_ERR,"Wildcard add failed(ret=%d)\n",ret);
+                return ret;
+            }
+
+            if(remLen != 0){
+                cur++;
+                remLen--;
+            }
+        }
+        else if(uniCnt != 0){
+            ret = wldlib_blkLstAddUni(blkLst, uniCnt, remLen?(*cur):'\0', NULL, &chrCb);
+            if((ret != RC_OK) &&
+               (ret != WLDERR_CHR_CB_ALREADY_EXIST)){
+                WLD_LOG(WLD_ERR,"Uni add failed(ret=%d)\n",ret);
+                return ret;
+            }
+            if(remLen != 0){
+                cur++;
+                remLen--;
+            }
+        }
+
+        if(remLen == 0){
+            break;
+        }
+
+        blkLst = chrCb->nxtLst;
+    }/* end of while(remLen) */
+
+    if(chrCb != NULL){
+        chrCb->usrArg = usrArg;
+    }
+
+    return RC_OK;
+}
+

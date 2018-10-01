@@ -1,0 +1,53 @@
+=== RULE LIST ===
+testwildcard.com
+unimessage.com
+*.com
+test*
+test*d.com
+test*card.com
+test*card.*m
+test*c*.com
+test*card.*
+test*caud.*
+test*card.___
+test___crd.com
+test____
+test*d*d.com
+
+=== HASH TABLE ===
+testwildcard.com
+unimessage.com
+
+=== WILDCARD TABLE ===
+| test | *c   | ard. | com  |
+|      |      |      | *m   |
+|      |      |      | *    |
+|      |      |      | ___  |
+|      |      | aud. | *    |
+|      |      | *.   | com  |
+|      | *d   | .com |      |
+|      |      | *d   | .com |
+|      | *    |      |      |
+|      | ___c |      |      |
+|      | ____ |      |      |
+| *.   | com  |      |      |
+
+=== SEARCH PRIORITY ===
+HASH TABLE
+UNI WILDCARD
+WILDCARD
+
+
+=== ADD RULE ===
+1. Add test*
+
+test   | * |
+
+2. Add test*d.com
+
+test | * |
+       *d | .com
+
+3. Add test*card.com
+
+test 

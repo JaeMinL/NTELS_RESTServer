@@ -1,0 +1,76 @@
+#!/bin/sh
+
+#HP-UX
+#CC				= cc
+
+#LINUX
+CC				= gcc
+
+RM				= rm -f
+DEPEND			= makedepend
+LINT			= lint
+
+BASE_HOME = ../..
+SRC_HOME  = .
+
+OUT_DIR   = .
+DST_DIR   = $(BASE_HOME)/bin
+INC_DIR   = $(BASE_HOME)/include
+LIB_DIR   = $(BASE_HOME)/lib
+
+API_DIR   = $(BASE_HOME)/api/include
+API_LIB_DIR = $(BASE_HOME)/api/lib
+
+OBJ       = o
+
+#Fixed System Flag 
+###################################
+#              LIST               #
+###################################
+SYS_FIXED_FLAG  = AUTO
+
+ENV = -Wall 
+
+COPTS     = -g  -lpthread -lxml2 #-pg #+w2
+IOPTS     = -I$(INC_DIR) -I$(API_DIR)
+
+IHLROPTS  = -I. -I/usr/include/libxml2 #-DLOGLIB_DISP_ENV_LVL #-DLOGLIB_DISP_ENV_FILE -DLOGLIB_DISP_ENV_LINE
+
+POPTS     = $(DEBUG) $(DEBUG_TRC)
+
+LIBS      = \
+		$(BASE_HOME)/lib/libthr.a\
+		$(BASE_HOME)/lib/libcom.a\
+
+
+SRCS		= test.c \
+			loglibInt_init.c \
+			loglibInt_apnd.c\
+			loglibInt_thrd.c\
+			loglibInt_misc.c\
+			loglibInt_cfg.c\
+			loglibInt_glob.c\
+			loglib_api.c\
+
+OBJS			= $(SRCS:.c=.o)
+
+AOUT			= test 
+
+DEST			= ./
+
+#
+#---------------------------------------------------------------------
+#
+all:: $(AOUT) install
+
+.SUFFIXES: .c .o
+.c.o:
+		$(CC) $(COPTS) $(ENV) $(LOPTS) $(IOPTS) $(POPTS) $(IHLROPTS) -c $<;
+
+$(AOUT): $(OBJS)
+		$(CC) $(COPTS) $(ENV) $(LOPTS) -o $(AOUT) $(IOPTS) $(POPTS) $(IHLROPTS) $(OBJS) $(LIBS);
+
+install:
+
+clean:
+	\rm -f $(OBJS) $(AOUT) core

@@ -1,0 +1,102 @@
+#!/bin/sh
+
+#HP-UX
+#CC				= cc
+
+#LINUX
+CC				= gcc
+
+RM				= rm -f
+DEPEND			= makedepend
+LINT			= lint
+
+BASE_HOME = ../..
+SRC_HOME  = .
+
+OUT_DIR   = .
+DST_DIR   = $(BASE_HOME)/bin
+INC_DIR   = $(BASE_HOME)/include
+LIB_DIR   = $(BASE_HOME)/lib
+
+#API_DIR   = $(BASE_HOME)/api/include
+#API_LIB_DIR = $(BASE_HOME)/api/lib
+
+OBJ       = o
+
+#Fixed System Flag 
+###################################
+#              LIST               #
+###################################
+SYS_FIXED_FLAG  = AUTO
+
+ENV = -Wall 
+
+COPTS     = -g -ltcmalloc -O2 -finline-functions #-lpthread #-pg #+w2
+#COPTS     = -g -ltcmalloc -lpthread #-pg #+w2
+#COPTS     = -g -ltcmalloc -lpthread #-pg #+w2
+IOPTS     = -I$(INC_DIR) -I$(API_DIR) -DRLYLIB_LOG
+
+IHLROPTS  = -I. 
+
+POPTS     = $(DEBUG) $(DEBUG_TRC)
+
+LIBS      = \
+		$(BASE_HOME)/lib/libthlib.a\
+		$(BASE_HOME)/lib/libcmlib.a\
+
+SRCS		= rlylibInt_init.c \
+			  rlylibInt_acpt.c \
+			  rlylibInt_sock.c \
+			  rlylibInt_rlm.c \
+			  rlylibInt_host.c \
+			  rlylibInt_msg.c \
+			  rlylibInt_glob.c \
+			  rlylibInt_sync.c \
+			  rlylib_api.c \
+			  cli_test.c \
+			  svr_test.c \
+
+OBJS			= $(SRCS:.c=.o)
+CLI_OBJS	= rlylibInt_init.o \
+			  rlylibInt_acpt.o \
+			  rlylibInt_sock.o \
+			  rlylibInt_rlm.o \
+			  rlylibInt_host.o \
+			  rlylibInt_msg.o \
+			  rlylibInt_glob.o \
+			  rlylibInt_sync.o \
+			  rlylib_api.o \
+			  cli_test.o \
+
+SVR_OBJS	= rlylibInt_init.o \
+			  rlylibInt_acpt.o \
+			  rlylibInt_sock.o \
+			  rlylibInt_rlm.o \
+			  rlylibInt_host.o \
+			  rlylibInt_msg.o \
+			  rlylibInt_glob.o \
+			  rlylibInt_sync.o \
+			  rlylib_api.o \
+			  svr_test.o \
+
+AOUT			= svr_tst
+
+DEST			= ./
+
+#
+#---------------------------------------------------------------------
+#
+all:: $(AOUT) install
+
+.SUFFIXES: .c .o
+.c.o:
+		$(CC) $(COPTS) $(ENV) $(LOPTS) $(IOPTS) $(POPTS) $(IHLROPTS) -c $<;
+
+$(AOUT): $(OBJS)
+		$(CC) $(COPTS) $(ENV) $(LOPTS) -o svr_test $(IOPTS) $(POPTS) $(IHLROPTS) $(SVR_OBJS) $(LIBS);
+		$(CC) $(COPTS) $(ENV) $(LOPTS) -o cli_test $(IOPTS) $(POPTS) $(IHLROPTS) $(CLI_OBJS) $(LIBS);
+
+install:
+
+clean:
+	\rm -f $(OBJS) $(AOUT) core svr_test cli_test

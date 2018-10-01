@@ -1,0 +1,73 @@
+#!/bin/sh
+
+#HP-UX
+#CC				= cc
+
+#LINUX
+CC				= gcc
+
+RM				= rm -f
+DEPEND			= makedepend
+LINT			= lint
+
+BASE_HOME = ../..
+SRC_HOME  = .
+
+OUT_DIR   = .
+DST_DIR   = $(BASE_HOME)/bin
+INC_DIR   = $(BASE_HOME)/include
+LIB_DIR   = $(BASE_HOME)/lib
+
+API_DIR   = $(BASE_HOME)/api/include
+API_LIB_DIR = $(BASE_HOME)/api/lib
+
+OBJ       = o
+
+#Fixed System Flag 
+###################################
+#              LIST               #
+###################################
+SYS_FIXED_FLAG  = AUTO
+
+ENV = -Wall 
+
+COPTS     = -g  -lpthread #-pg #+w2
+IOPTS     = -I$(INC_DIR) -I$(API_DIR)
+
+IHLROPTS  = -I. -I../../../include -I../../../libsrc/COMM -I$(BASE_HOME)/SCTP/sb
+
+POPTS     = $(DEBUG) $(DEBUG_TRC)
+
+LIBS      = \
+		$(BASE_HOME)/lib/libcom.a\
+
+
+SRCS		= thrlib_thrd.c \
+			  thrlib_mutx.c \
+			  thrlib_cond.c \
+			  thrlib_tq.c \
+			  thrlib_pool.c \
+			  test.c \
+
+OBJS			= $(SRCS:.c=.o)
+
+AOUT			= test 
+
+DEST			= ./
+
+#
+#---------------------------------------------------------------------
+#
+all:: $(AOUT) install
+
+.SUFFIXES: .c .o
+.c.o:
+		$(CC) $(COPTS) $(ENV) $(LOPTS) $(IOPTS) $(POPTS) $(IHLROPTS) -c $<;
+
+$(AOUT): $(OBJS)
+		$(CC) $(COPTS) $(ENV) $(LOPTS) -o $(AOUT) $(IOPTS) $(POPTS) $(IHLROPTS) $(OBJS) $(LIBS);
+
+install:
+
+clean:
+	\rm -f $(OBJS) $(AOUT) core
