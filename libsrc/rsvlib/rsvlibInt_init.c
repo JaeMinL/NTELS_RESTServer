@@ -44,6 +44,8 @@ FT_PUBLIC RT_RESULT rsvlibInt_init(UINT id, RsvlibGenCfg *genCfg)
 
     thrlib_mutxInit(&rsvlibIntCb->runMutx);
 
+    rsvlibIntCb->runFlg = RC_FALSE;
+
     comlib_memMemcpy(&rsvlibIntCb->genCfg, genCfg, sizeof(RsvlibGenCfg));
 
     rsvlibIntCb->svrThrdMainCb.dm = NULL;

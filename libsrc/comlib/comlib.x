@@ -88,7 +88,6 @@ struct ComlibHashEntry{
 
 struct ComlibHashTbl{
     UINT                hashType;   /* Hash Type */
-    UINT                maxNodeBktCnt;
     UINT                nmbEntry;   /* Number of entry*/
     UINT                bitMask;    /* bit mask */
     BOOL                dupFlg;     /* Allow duplicate key */

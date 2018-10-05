@@ -503,10 +503,6 @@ FT_PUBLIC RT_RESULT comlib_hashTblInsertHashNode(ComlibHashTbl *hashTbl, CONST C
                     COM_LOG(COM_ERR,"Can not insert hash Node\n"),
                     COMERR_HASHNODE_INSERT_FAIL);
 
-    if(entry->nodeCnt > hashTbl->maxNodeBktCnt){
-        hashTbl->maxNodeBktCnt = entry->nodeCnt;
-    }
-
     return RC_OK;
 }
 
