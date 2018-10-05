@@ -7,6 +7,8 @@ FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR *date_store);
 extern "C" {
 #endif
 
+#define MAIN_CFG_PATH_LEN               256
+
 FT_PUBLIC VOID logPrnt(UINT lvl, CHAR *file, UINT line, CHAR *logStr);
 
 #ifdef __cplusplus

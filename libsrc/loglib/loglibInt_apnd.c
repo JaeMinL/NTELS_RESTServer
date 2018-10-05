@@ -252,7 +252,7 @@ FT_PUBLIC RT_RESULT loglibInt_apndInit(UINT type, CHAR *name, LoglibApndCfg *apn
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglibInt_apndMakeFile(LoglibIntApndCb *apndCb, CHAR *usrLog, UINT usrLogLen)
+FT_PUBLIC RT_RESULT loglibInt_apndMakeFile(LoglibIntApndCb *apndCb)
 {
     SINT ret = RC_OK;
     SINT i = 0;
@@ -264,23 +264,32 @@ FT_PUBLIC RT_RESULT loglibInt_apndMakeFile(LoglibIntApndCb *apndCb, CHAR *usrLog
         apndCb->u.file.fp = NULL;
     }
 
-    ret = stat(usrLog, &fStat);
+    ret = stat(apndCb->u.file.fullLogPath, &fStat);
     if(ret == 0){ /* exist */
         if(fStat.st_size > apndCb->u.file.maxLogSize){
             for(i=24;i>=0;i--){
                 /* if exist */
-                usrLog[usrLogLen-1] = i+'A';
-                
-                ret = access(usrLog,F_OK);
+                if(i != 0){
+                    comlib_strSNPrnt(apndCb->u.file.fullLogPath, LOGLIB_LOG_PATH_MAX_LEN,
+                            "%s.%d", apndCb->u.file.fullLogPath, i);
+                }
+
+                ret = access(apndCb->u.file.fullLogPath,F_OK);
                 if(ret != 0){
+                    apndCb->u.file.fullLogPath[apndCb->u.file.fullLogPathLen] = '\0';
                     continue;
                 }
 
                 /* change */
-                comlib_strCpy(tmp, usrLog);
-                tmp[usrLogLen-1] =  i+1+'A';
+                comlib_strSNPrnt(tmp, LOGLIB_LOG_PATH_MAX_LEN,
+                        "%.*s.%d", 
+                        apndCb->u.file.fullLogPathLen, 
+                        apndCb->u.file.fullLogPath,
+                        i+1);
 
-                rename(usrLog, tmp);
+                rename(apndCb->u.file.fullLogPath, tmp);
+
+                apndCb->u.file.fullLogPath[apndCb->u.file.fullLogPathLen] = '\0';
             }/* end of for(i=24;i>=0;i--) */
 
             apndCb->u.file.logSize = 0;
@@ -290,9 +299,12 @@ FT_PUBLIC RT_RESULT loglibInt_apndMakeFile(LoglibIntApndCb *apndCb, CHAR *usrLog
         }
     }/* end of if(ret == 0) */
 
-    apndCb->u.file.fp = fopen(usrLog,"a");
+    apndCb->u.file.fp = fopen(apndCb->u.file.fullLogPath,"a");
     if(apndCb->u.file.fp == NULL){
-        LOG_LOG(LOG_ERR,"Log file open failed(path=%.*s, error=%d:%s)\n", usrLogLen, usrLog, errno, strerror(errno));
+        LOG_LOG(LOG_ERR,"Log file open failed(path=%.*s, error=%d:%s)\n", 
+                apndCb->u.file.fullLogPathLen,
+                apndCb->u.file.fullLogPath,
+                errno, strerror(errno));
         return LOGERR_LOG_FILE_OPEN_FAILED; 
     }
 
@@ -303,8 +315,6 @@ FT_PUBLIC RT_RESULT loglibInt_apndMake(LoglibIntApndCb *apndCb)
 {
     SINT ret = RC_OK;
     TIMET curTm = 0;
-    UINT usrLogLen = 0;
-    CHAR usrLog[LOGLIB_LOG_PATH_MAX_LEN];
     struct tm *curTms = NULL;
 
     curTm = time(NULL);
@@ -312,24 +322,30 @@ FT_PUBLIC RT_RESULT loglibInt_apndMake(LoglibIntApndCb *apndCb)
 
     comlib_memMemcpy(&apndCb->u.file.lastTms, curTms, sizeof(struct tm));
 
-    usrLogLen = comlib_strSNPrnt(usrLog, LOGLIB_LOG_PATH_MAX_LEN,"%.*s",apndCb->u.file.logPathLen, apndCb->u.file.logPath);
-    usrLogLen += comlib_strSNPrnt(&usrLog[usrLogLen], LOGLIB_LOG_PATH_MAX_LEN - usrLogLen, 
+    apndCb->u.file.fullLogPathLen = comlib_strSNPrnt(apndCb->u.file.fullLogPath, 
+            LOGLIB_LOG_PATH_MAX_LEN,
+            "%.*s",apndCb->u.file.logPathLen, apndCb->u.file.logPath);
+    apndCb->u.file.fullLogPathLen += comlib_strSNPrnt(&apndCb->u.file.fullLogPath[apndCb->u.file.fullLogPathLen], 
+            LOGLIB_LOG_PATH_MAX_LEN - apndCb->u.file.fullLogPathLen, 
                                   "/%04d-%02d-%02d", (curTms->tm_year+1900), curTms->tm_mon+1, curTms->tm_mday);
 
-    ret = comlib_fileFrceDir(usrLog, 0755);
+    ret = comlib_fileFrceDir(apndCb->u.file.fullLogPath, 0755);
     if(ret != RC_OK){
         if(ret != COMERR_FILE_EXIST){
-            LOG_LOG(LOG_ERR,"mkdir failed(path=%s, error=%d:%s)\n",usrLog, errno, strerror(errno));
+            LOG_LOG(LOG_ERR,"mkdir failed(path=%s, error=%d:%s)\n",apndCb->u.file.fullLogPath, errno, strerror(errno));
             return LOGERR_LOG_DIR_CRTE_FAILED;
         }
     }
 
-    usrLogLen += comlib_strSNPrnt(&usrLog[usrLogLen], LOGLIB_LOG_PATH_MAX_LEN - usrLogLen, 
-                                  "/%.*s%02d.A",apndCb->u.file.nameLen, apndCb->u.file.name, curTms->tm_hour);
+    apndCb->u.file.fullLogPathLen += comlib_strSNPrnt(&apndCb->u.file.fullLogPath[apndCb->u.file.fullLogPathLen], 
+            LOGLIB_LOG_PATH_MAX_LEN - apndCb->u.file.fullLogPathLen, 
+                                  "/%.*s%02d.log",apndCb->u.file.nameLen, apndCb->u.file.name, curTms->tm_hour);
 
-    ret = loglibInt_apndMakeFile(apndCb, usrLog, usrLogLen);
+    ret = loglibInt_apndMakeFile(apndCb);
     if(ret != RC_OK){
-        LOG_LOG(LOG_ERR,"File make failed(path=%.*s,ret=%d)\n",usrLogLen, usrLog, ret);
+        LOG_LOG(LOG_ERR,"File make failed(path=%.*s,ret=%d)\n",
+                apndCb->u.file.fullLogPathLen, 
+                apndCb->u.file.fullLogPath, ret);
         return ret;
     }
 
@@ -383,6 +399,8 @@ FT_PUBLIC RT_RESULT loglibInt_apndWrite(LoglibIntApndCb *apndCb, CONST UINT lvl,
                 else {
                     fputs(logBuf, stderr);
                 }
+
+                apndCb->u.file.logSize += comlib_strGetLen(logBuf);
             }
             break;
         case LOGLIB_APND_TYPE_STDOUT:
@@ -404,7 +422,7 @@ FT_PUBLIC RT_RESULT loglibInt_apndWrite(LoglibIntApndCb *apndCb, CONST UINT lvl,
                     case LOGLIB_LVL_NOTY:  pri = LOG_INFO;   /* syslog info */
                     case LOGLIB_LVL_DBG:   pri = LOG_DEBUG;  /* syslog debug */
                 }
-                syslog(pri | apndCb->u.syslog.fac,logBuf);
+                syslog(pri | apndCb->u.syslog.fac,"%s", logBuf);
             }
             break;
     };/* switch (apndCb->type) */

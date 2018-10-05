@@ -11,7 +11,7 @@
 #include "loglibInt.h"
 #include "loglibInt.x"
 
-FT_PRIVATE VOID thrd_clnThrd(VOID *args);
+FT_PRIVATE VOID       thrd_clnThrd       (VOID *args);
 
 FT_PRIVATE VOID thrd_clnThrd(VOID *args)
 {
@@ -235,3 +235,4 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
 
     return ;
 }
+

@@ -1,0 +1,29 @@
+[[LOG_CFG]]
+  name = "REST_IF"
+
+  [[LOG_CFG.LOG]]
+    name = "REST"
+    log_level = 4
+    write_thread_flag = "true"
+  
+  [[LOG_CFG.LOG.APPENDER]]
+    type = "file"
+    name = "file_appender"
+    display_level = "true"
+    display_file = "true"
+    display_line = "true"
+    display_time = "true"
+    log_path = "../log/rest_if"
+    log_name = "rest"
+    max_log_size = 524288000
+  
+  [[LOG_CFG.LOG.APPENDER]]
+    type = "stdout"
+    name = "stdout_appender"
+    display_level = "true"
+    display_file = "true"
+    display_line = "true"
+    display_time = "true"
+    std_type = "stderr"
+    #std_type = "stdout"
+ 

@@ -1,9 +1,9 @@
 <!-- DEFAULT APPDNER 
      STDOUT - STDERR
 -->
-<LOG_CFG>
-    <LOG name="test">
-        <LOG_LEVEL>3</LOG_LEVEL>
+<LOG_CFG name="TESt">
+    <LOG name="test_log">
+        <LOG_LEVEL>2</LOG_LEVEL>
         <WR_THRD_FLAG>true</WR_THRD_FLAG>
         <APPENDER type="file" >
             <!-- 
@@ -19,7 +19,65 @@
             <DISP_TIME>true</DISP_TIME>
             <LOG_PATH>./LOG</LOG_PATH>
             <LOG_NAME>TEST</LOG_NAME>
-            <MAX_LOG_SIZE>100000</MAX_LOG_SIZE>
+            <MAX_LOG_SIZE>10</MAX_LOG_SIZE>
+            <!--MAX_LOG_SIZE>100000</MAX_LOG_SIZE-->
+        </APPENDER>
+        <APPENDER type="syslog">
+            <!-- 
+                 STDOUT 1
+                 FILE   2
+                 SYSLOG 3
+                 REMOTE 4
+             -->
+            <NAME>SYSLOG</NAME>
+            <DISP_LEVEL>true</DISP_LEVEL>
+            <DISP_FILE>true</DISP_FILE>
+            <DISP_LINE>true</DISP_LINE>
+            <DISP_TIME>true</DISP_TIME>
+             <FACILITY>LOG_LOCAL0</FACILITY>
+        </APPENDER>
+        <APPENDER type="stdout">
+            <!-- 
+                 STDOUT 1
+                 FILE   2
+                 SYSLOG 3
+                 REMOTE 4
+             -->
+            <NAME>STDOUT</NAME>
+            <DISP_LEVEL>true</DISP_LEVEL>
+            <DISP_FILE>true</DISP_FILE>
+            <DISP_LINE>true</DISP_LINE>
+            <DISP_TIME>true</DISP_TIME>
+
+            <LOG_LEVEL>1</LOG_LEVEL>
+            <LOG_LEVEL>2</LOG_LEVEL>
+            <LOG_LEVEL>3</LOG_LEVEL>
+            <!-- 
+                STDERR   1
+                STDOUT   2
+             -->
+            <TYPE>1</TYPE>
+        </APPENDER>
+    </LOG>
+    <LOG>
+        <LOG_LEVEL>2</LOG_LEVEL>
+        <WR_THRD_FLAG>true</WR_THRD_FLAG>
+        <APPENDER type="file" >
+            <!-- 
+                 STDOUT 1
+                 FILE   2
+                 SYSLOG 3
+                 REMOTE 4
+             -->
+            <NAME>FILE</NAME>
+            <DISP_LEVEL>false</DISP_LEVEL>
+            <DISP_FILE>false</DISP_FILE>
+            <DISP_LINE>false</DISP_LINE>
+            <DISP_TIME>true</DISP_TIME>
+            <LOG_PATH>./LOG</LOG_PATH>
+            <LOG_NAME>TEST</LOG_NAME>
+            <MAX_LOG_SIZE>10</MAX_LOG_SIZE>
+            <!--MAX_LOG_SIZE>100000</MAX_LOG_SIZE-->
         </APPENDER>
         <APPENDER type="syslog">
             <!-- 

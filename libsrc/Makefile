@@ -18,6 +18,7 @@ SOURCES			= genhdr\
 				  smulib\
 				  wldlib\
 				  rsvlib\
+				  rcllib\
 
 all::
 	       	@for i in $(SOURCES) ; \

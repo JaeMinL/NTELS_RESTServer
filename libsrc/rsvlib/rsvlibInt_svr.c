@@ -180,7 +180,7 @@ FT_PRIVATE RT_RESULT svr_sesDstry(SvrSesCb *sesCb)
     }
     thrlib_mutxUnlock(&svrThrdMainCb->sesMutx);
     comlib_msgPutMsg(&sesCb->msg);
-    
+
     return RC_OK;
 }
 
@@ -351,7 +351,7 @@ FT_PRIVATE RT_RESULT svr_usrHdlr(RsvlibIntSvrThrdMainCb *svrThrdMainCb, UINT mth
     }
 
     svrRsp->datLen = 0;
-    svrRsp->dat = NULL;
+
     if(sesCb.rsp.datLen != 0){
         svrRsp->dat = sesCb.rsp.dat;
         svrRsp->datLen = sesCb.rsp.datLen;
@@ -650,7 +650,6 @@ FT_PUBLIC RT_RESULT rsvlibInt_svrStop(RsvlibIntSvrThrdMainCb *svrThrdMainCb)
     if(ret != RC_OK){
         RSV_LOG(RSV_ERR,"Server session clear failed(ret=%d)\n",ret);
     }
-    comlib_memFree(svrThrdMainCb);   
 
     return RC_OK;
 }

@@ -30,6 +30,8 @@ $(TARGET)	: $(OBJS)
 all			: clean $(TARGET)
 
 install     :
+	    mkdir -p $(TARGET_DIR)
+		mkdir -p $(TARGET_INC)
 		cp $(TARGET) $(TARGET_DIR)
 		cp rcllib.h $(TARGET_INC)
 		cp rcllib.x $(TARGET_INC)

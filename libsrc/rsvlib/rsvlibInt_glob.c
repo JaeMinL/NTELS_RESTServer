@@ -86,6 +86,7 @@ FT_PUBLIC RsvlibIntCb* rsvlibInt_globGetRsvlibIntCb(UINT id)
         RSV_LOG(RSV_ERR,"Invalid id(%d)\n",id);
         return NULL;
     }
+
     return g_globCb.rsvlibCb[id];
 }
 

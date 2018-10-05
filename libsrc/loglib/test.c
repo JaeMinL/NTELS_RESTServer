@@ -19,35 +19,53 @@ void logFunc(struct tm *curTms, UINT lvl, CHAR *fName, UINT line, CHAR *logStr)
 int main()
 {
     SINT ret = RC_OK;
-    LoglibCb loglibCb;
     LoglibCfg cfg;
-    LoglibApndCfg apndCfg;
+    //LoglibApndCfg apndCfg;
 
+    LOGLIB_GLOB_INIT();
     LOGLIB_INIT_CFG(&cfg);
 
+    cfg.dfltLogLvl = LOGLIB_LVL_NOTY;
     //cfg.wrType = LOGLIB_WR_TYPE_THRD;
 
-    ret = loglib_apiLoadCfg(&loglibCb, "./cfg_sample/log.xml", "TEST");
+    //ret = loglib_apiLoadXml("./cfg_sample/log.xml", "TEST");
+    ret = loglib_apiLoadToml("./cfg_sample/log.toml", NULL);
+    //if(ret != RC_OK){
+    //    fprintf(stderr," loglib cfg init failed(ret=%d)\n",ret);
+    //    return 0;
+    //}
+
+    //ret = loglib_apiInit(NULL, &cfg);
+#if 0
+    ret = loglib_apiRegApnd("test", "TEST_APND", LOGLIB_APND_TYPE_STDOUT, NULL);
     if(ret != RC_OK){
-        fprintf(stderr," loglib cfg init failed(ret=%d)\n",ret);
+        fprintf(stderr,"Append failed(ret=%d)\n",ret);
         return 0;
     }
+#endif
 
     //loglib_apiDeregApnd(&loglibCb, "STDOUT");
 #if 0
     loglib_apiSetApndLogLvl(&loglibCb, "STDOUT", LOGLIB_APND_DISP_ERR_LOG_BIT
-                            | LOGLIB_APND_DISP_NOTY_LOG_BIT
-                            | LOGLIB_APND_DISP_DBG_LOG_BIT
-                           );
+            | LOGLIB_APND_DISP_NOTY_LOG_BIT
+            | LOGLIB_APND_DISP_DBG_LOG_BIT
+            );
 #endif
 
-    LOGLIB_ERR(&loglibCb, "ERROR LOG\n");
-    LOGLIB_NOTY(&loglibCb, "NOTIFY LOG\n");
-    LOGLIB_DBG(&loglibCb, "DBG LOG\n");
+    while(1){
+        LOGLIB_ERR("test2", "ERROR LOG\n");
+        LOGLIB_NOTY("test", "NOTIFY LOG\n");
+        LOGLIB_DBG("test", "DBG LOG\n");
+        LOGLIB_ERR("test_log", "LOG_ERROR LOG\n");
+        LOGLIB_NOTY("test_log", "LOG_NOTIFY LOG\n");
+        LOGLIB_DBG("test_log", "LOG_DBG LOG\n");
+        sleep(1);
+    }
 
     sleep(3);
 
-    loglib_apiDstryLoglibCb(&loglibCb);
+    //loglib_apiDstryLoglibCb(&loglibCb);
+    loglib_apiDstry("test");
 #if 0
     ret = loglib_apiInitLoglibCb(&loglibCb, "./","TEST", &cfg);
     if(ret != RC_OK){

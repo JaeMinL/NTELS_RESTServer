@@ -275,16 +275,28 @@ FT_PRIVATE RT_RESULT api_setApndLogLvl(LoglibIntApndInfo *apndInfo, VOID *arg)
 
 FT_PUBLIC RT_RESULT loglib_apiGlobInit(UINT bit)
 {
+    SINT ret = RC_OK;
+
+    ret = loglibInt_globInit();
+    if(ret != RC_OK){
+        return ret;
+    }
+
     loglibInt_globSetDispEnv(bit);
 
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiLoadCfg(LoglibCb *loglibCb, CHAR *cfgFile, CHAR *name)
+#ifndef LOGLIB_XML_CONFIG_DISABLE
+FT_PUBLIC RT_RESULT loglib_apiLoadXml(CONST CHAR *cfgFile, CONST CHAR *name)
 {
     SINT ret = RC_OK;
 
-    ret = loglibInt_cfgLoadCfg(loglibCb, cfgFile, name);
+    if(loglibInt_globGetInitFlg() != RC_TRUE){
+        return LOGERR_GLOB_NOT_BEEN_INITTIALIZED;
+    }
+
+    ret = loglibInt_loadXml(cfgFile, name);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Config load failed(ret=%d, cfg=%s)\n",ret, cfgFile);
         return ret;
@@ -292,35 +304,73 @@ FT_PUBLIC RT_RESULT loglib_apiLoadCfg(LoglibCb *loglibCb, CHAR *cfgFile, CHAR *n
 
     return RC_OK;
 }
+#endif /* LOGLIB_XML_CONFIG_DISABLE */
 
-FT_PUBLIC RT_RESULT loglib_apiInitLoglibCb(LoglibCb *loglibCb, LoglibCfg *cfg)
+#ifndef LOGLIB_TOML_CONFIG_DISABLE
+FT_PUBLIC RT_RESULT loglib_apiLoadToml(CONST CHAR *cfgFile, CONST CHAR *name)
 {
     SINT ret = RC_OK;
 
-    loglibCb->mainCb = comlib_memMalloc(sizeof(LoglibIntMainCb));
-
-    if(cfg == NULL){
-        loglibCb->logLvl = LOGLIB_LVL_ERR;
-    }
-    else {
-        loglibCb->logLvl = cfg->dfltLogLvl;
+    if(loglibInt_globGetInitFlg() != RC_TRUE){
+        return LOGERR_GLOB_NOT_BEEN_INITTIALIZED;
     }
 
-    ret = loglibInt_init(loglibCb->mainCb, cfg);
+    ret = loglibInt_loadToml(cfgFile, name);
     if(ret != RC_OK){
-        LOG_LOG(LOG_INT_ERR,"Loglib init failed(ret=%d\n",ret);
+        LOG_LOG(LOG_INT_ERR,"Config load failed(ret=%d, cfg=%s)\n",ret, cfgFile);
         return ret;
     }
 
     return RC_OK;
 }
+#endif /* LOGLIB_TOML_CONFIG_DISABLE */
 
-FT_PUBLIC RT_RESULT loglib_apiDstryLoglibCb(LoglibCb *loglibCb)
+FT_PUBLIC RT_RESULT loglib_apiInit(CHAR *name, LoglibCfg *cfg)
 {
     SINT ret = RC_OK;
     LoglibIntMainCb *mainCb = NULL;
 
-    mainCb = loglibCb->mainCb;
+    if(name == NULL){
+        mainCb = loglibInt_globDelDfltLoglibCb();
+        if(mainCb != NULL){
+            return LOGERR_ALREADY_EXIST;
+        }
+    }
+
+    ret = loglibInt_init(name, cfg, &mainCb);
+    if(ret != RC_OK){
+        LOG_LOG(LOG_INT_ERR,"Loglib init failed(ret=%d\n",ret);
+        return ret;
+    }
+
+    ret = loglibInt_globRegLoglibCb(mainCb);
+    if(ret != RC_OK){
+        LOG_LOG(LOG_INT_ERR,"Loglib reg failed(ret=%d)\n",ret);
+        return ret;
+    }
+
+    loglibInt_globSetMaxLogLvl(mainCb->logLvl);
+
+    return RC_OK;
+}
+
+FT_PUBLIC RT_RESULT loglib_apiDstry(CHAR *name)
+{
+    SINT ret = RC_OK;
+    LoglibIntMainCb *mainCb = NULL;
+
+    loglibInt_globLock();
+
+    if(name == NULL){ /* default */
+        mainCb = loglibInt_globDelDfltLoglibCb();
+    }
+    else {
+        ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_TRUE);
+        if(ret != RC_OK){
+            loglibInt_globUnlock();
+            return RC_OK;
+        }
+    }
 
     thrlib_mutxLock(&mainCb->mutx);
 
@@ -328,6 +378,7 @@ FT_PUBLIC RT_RESULT loglib_apiDstryLoglibCb(LoglibCb *loglibCb)
         ret = loglibInt_apndDelAll(&mainCb->u.dir.apndInfo);
         if(ret != RC_OK){
             LOG_LOG(LOG_INT_ERR,"Append delete failed(ret=%d)\n",ret);
+            loglibInt_globUnlock();
             return ret;
         }
     }
@@ -341,16 +392,24 @@ FT_PUBLIC RT_RESULT loglib_apiDstryLoglibCb(LoglibCb *loglibCb)
 
     comlib_memFree(mainCb);
 
+    loglibInt_globUnlock();
+
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiSetDispHdr(LoglibCb *loglibCb, CHAR *apndName, U_32 dispBit)
+FT_PUBLIC RT_RESULT loglib_apiSetDispHdr(CHAR *name, CHAR *apndName, U_32 dispBit)
 {
     SINT ret = RC_OK;
     LoglibIntMainCb *mainCb = NULL;
     ApiDispHdrCtrl dispHdrCtrl;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
 
     dispHdrCtrl.apndNameLen = comlib_strGetLen(apndName);
     dispHdrCtrl.apndName = apndName;
@@ -359,19 +418,28 @@ FT_PUBLIC RT_RESULT loglib_apiSetDispHdr(LoglibCb *loglibCb, CHAR *apndName, U_3
     ret = api_getCallApndInfoFunc(mainCb, api_setDispHdr, &dispHdrCtrl);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
+
+    loglibInt_globUnlock();
 
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiSetDispHdrToPrev(LoglibCb *loglibCb, CHAR *apndName)
+FT_PUBLIC RT_RESULT loglib_apiSetDispHdrToPrev(CHAR *name, CHAR *apndName)
 {
     SINT ret = RC_OK;
     LoglibIntMainCb *mainCb = NULL;
     ApiDispHdrCtrl dispHdrCtrl;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
 
     dispHdrCtrl.apndNameLen = comlib_strGetLen(apndName);
     dispHdrCtrl.apndName = apndName;
@@ -380,19 +448,27 @@ FT_PUBLIC RT_RESULT loglib_apiSetDispHdrToPrev(LoglibCb *loglibCb, CHAR *apndNam
     ret = api_getCallApndInfoFunc(mainCb, api_SetDispHdrToPrev, &dispHdrCtrl);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
 
+    loglibInt_globUnlock();
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiGetDispHdr(LoglibCb *loglibCb, CHAR *apndName, U_32 *rt_dispBit)
+FT_PUBLIC RT_RESULT loglib_apiGetDispHdr(CHAR *name, CHAR *apndName, U_32 *rt_dispBit)
 {
     SINT ret = RC_OK;
     LoglibIntMainCb *mainCb = NULL;
     ApiDispHdrCtrl dispHdrCtrl;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
 
     dispHdrCtrl.apndName = apndName;
     dispHdrCtrl.apndNameLen = comlib_strGetLen(apndName);
@@ -401,15 +477,18 @@ FT_PUBLIC RT_RESULT loglib_apiGetDispHdr(LoglibCb *loglibCb, CHAR *apndName, U_3
     ret = api_getCallApndInfoFunc(mainCb, api_getDispHdr, &dispHdrCtrl);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
 
     (*rt_dispBit) = dispHdrCtrl.dispBit;
 
+    loglibInt_globUnlock();
+
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiSetAllDispHdr(LoglibCb *loglibCb, U_32 dispBit)
+FT_PUBLIC RT_RESULT loglib_apiSetAllDispHdr(CHAR *name, U_32 dispBit)
 {
     SINT ret = RC_OK;
     LoglibIntMainCb *mainCb = NULL;
@@ -419,65 +498,119 @@ FT_PUBLIC RT_RESULT loglib_apiSetAllDispHdr(LoglibCb *loglibCb, U_32 dispBit)
     dispHdrCtrl.apndName = NULL;
     dispHdrCtrl.dispBit = dispBit;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
 
     ret = api_getCallApndInfoFunc(mainCb, api_setAllDispHdr, &dispHdrCtrl);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
 
+    loglibInt_globUnlock();
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiSetAllDispHdrToPrev(LoglibCb *loglibCb)
+FT_PUBLIC RT_RESULT loglib_apiSetAllDispHdrToPrev(CHAR *name)
 {
     SINT ret = RC_OK;
     LoglibIntMainCb *mainCb = NULL;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
 
     ret = api_getCallApndInfoFunc(mainCb, api_setAllDispHdrToPrev, NULL);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
 
+    loglibInt_globUnlock();
     return RC_OK;
 }
 
-FT_PUBLIC U_32 loglib_apiGetDfltDispHdr(LoglibCb *loglibCb)
+FT_PUBLIC U_32 loglib_apiGetDfltDispHdr(VOID)
 {
     return loglibInt_globGetDispEnv();
 }
 
-FT_PUBLIC RT_RESULT loglib_apiSetLogLvl(LoglibCb *loglibCb, UINT lvl)
+FT_PUBLIC RT_RESULT loglib_apiSetLogLvl(CHAR *name, UINT lvl)
 {
-    GEN_CHK_ERR_RET((lvl != LOGLIB_LVL_NONE) && (lvl != LOGLIB_LVL_ERR) &&
-                    (lvl != LOGLIB_LVL_NOTY) && (lvl != LOGLIB_LVL_DBG),
-                    LOG_LOG(LOG_INT_ERR,"Invalid Log level(lvl=%d)\n",lvl),
-                    LOGERR_INVLAID_LOG_LVL);
+    SINT ret = RC_OK;
+    LoglibIntMainCb *mainCb = NULL;
 
-    loglibCb->logLvl = lvl;
+    GEN_CHK_ERR_RET((lvl != LOGLIB_LVL_NONE) && (lvl != LOGLIB_LVL_ERR) &&
+            (lvl != LOGLIB_LVL_NOTY) && (lvl != LOGLIB_LVL_DBG),
+            LOG_LOG(LOG_INT_ERR,"Invalid Log level(lvl=%d)\n",lvl),
+            LOGERR_INVLAID_LOG_LVL);
+
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
+
+    loglibInt_globUnsetMaxLogLvl(mainCb->logLvl);
+
+    mainCb->logLvl = lvl;
+
+    loglibInt_globSetMaxLogLvl(mainCb->logLvl);
+
+    loglibInt_globUnlock();
 
     return RC_OK;
 }
 
-FT_PUBLIC INLINE UINT loglib_apiGetLogLvl(LoglibCb *loglibCb)
+FT_PUBLIC INLINE UINT loglib_apiGetLogLvl(CHAR *name)
 {
-    return loglibCb->logLvl;
+    SINT ret = RC_OK;
+    UINT lvl = 0;
+    LoglibIntMainCb *mainCb = NULL;
+
+    loglibInt_globLock();
+
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
+
+    lvl = mainCb->logLvl;
+
+    loglibInt_globUnlock();
+    return lvl;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiRegApnd(LoglibCb *loglibCb, CHAR *name, UINT type, LoglibApndCfg *apndCfg)
+FT_PUBLIC RT_RESULT loglib_apiRegApnd(CHAR *name, CHAR *apnName, UINT type, LoglibApndCfg *apndCfg)
 {
     SINT ret = RC_OK;
     ApiApndCfg apiApndCfg;
     LoglibIntMainCb *mainCb = NULL;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
 
-    apiApndCfg.nameLen = comlib_strGetLen(name);
-    apiApndCfg.name = name;
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
+
+    apiApndCfg.nameLen = comlib_strGetLen(apnName);
+    apiApndCfg.name = apnName;
     apiApndCfg.apndCfg = apndCfg;
     apiApndCfg.logLvlBit = 0;
     apiApndCfg.type = type;
@@ -485,22 +618,31 @@ FT_PUBLIC RT_RESULT loglib_apiRegApnd(LoglibCb *loglibCb, CHAR *name, UINT type,
     ret = api_getCallApndInfoFunc(mainCb, api_regApnd, &apiApndCfg);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
+
+    loglibInt_globUnlock();
 
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiDeregApnd(LoglibCb *loglibCb, CHAR *name)
+FT_PUBLIC RT_RESULT loglib_apiDeregApnd(CHAR *name, CHAR *apndName)
 {
     SINT ret = RC_OK;
     ApiApndCfg apiApndCfg;
     LoglibIntMainCb *mainCb = NULL;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
 
-    apiApndCfg.nameLen = comlib_strGetLen(name);
-    apiApndCfg.name = name;
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
+
+    apiApndCfg.nameLen = comlib_strGetLen(apndName);
+    apiApndCfg.name = apndName;
     apiApndCfg.apndCfg = NULL;
     apiApndCfg.logLvlBit = 0;
     apiApndCfg.type = 0;
@@ -508,22 +650,31 @@ FT_PUBLIC RT_RESULT loglib_apiDeregApnd(LoglibCb *loglibCb, CHAR *name)
     ret = api_getCallApndInfoFunc(mainCb, api_deregApnd, &apiApndCfg);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
+
+    loglibInt_globUnlock();
 
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiSetApndLogLvl(LoglibCb *loglibCb, CHAR *name, U_32 logLvlBit)
+FT_PUBLIC RT_RESULT loglib_apiSetApndLogLvl(CHAR *name, CHAR *apndName, U_32 logLvlBit)
 {
     SINT ret = RC_OK;
     ApiApndCfg apiApndCfg;
     LoglibIntMainCb *mainCb = NULL;
 
-    mainCb = loglibCb->mainCb;
+    loglibInt_globLock();
 
-    apiApndCfg.nameLen = comlib_strGetLen(name);
-    apiApndCfg.name = name;
+    ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+    if(ret != RC_OK){
+        loglibInt_globUnlock();
+        return RC_OK;
+    }
+
+    apiApndCfg.nameLen = comlib_strGetLen(apndName);
+    apiApndCfg.name = apndName;
     apiApndCfg.apndCfg = NULL;
     apiApndCfg.logLvlBit = logLvlBit;
     apiApndCfg.type = 0;
@@ -531,13 +682,16 @@ FT_PUBLIC RT_RESULT loglib_apiSetApndLogLvl(LoglibCb *loglibCb, CHAR *name, U_32
     ret = api_getCallApndInfoFunc(mainCb, api_setApndLogLvl, &apiApndCfg);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Append information call failed(ret=%d)\n",ret);
+        loglibInt_globUnlock();
         return ret;
     }
+
+    loglibInt_globUnlock();
 
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR *fName, UINT line, CONST CHAR *fmt, ...)
+FT_PUBLIC RT_RESULT loglib_apiLogWrite(CONST CHAR *name , UINT lvl, CONST CHAR *fName, UINT line, CONST CHAR *fmt, ...)
 {
     SINT ret = RC_OK;
     UINT hdrLen = 0;
@@ -550,12 +704,30 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
     CHAR *thrdMsg = NULL;
     CHAR *logBuf = NULL;
 
-    if(lvl > loglibCb->logLvl) {
-        thrlib_mutxUnlock(&mainCb->mutx);
+    loglibInt_globLock();
+
+    if(name == NULL){ /* default */
+        mainCb = loglibInt_globGetDfltLoglibCb();
+        if(mainCb == NULL){
+            loglibInt_globUnlock();
+            return RC_OK;
+        }
+    }
+    else {
+        ret = loglibInt_globFindLoglibCb(name, &mainCb, RC_FALSE);
+        if(ret != RC_OK){
+            mainCb = loglibInt_globGetDfltLoglibCb();
+            if(mainCb == NULL){
+                loglibInt_globUnlock();
+                return RC_OK;
+            }
+        }
+    }/* end of else */
+
+    if(lvl > mainCb->logLvl) {
+        loglibInt_globUnlock();
         return RC_OK;
     }
-
-    mainCb = (LoglibIntMainCb*)loglibCb->mainCb;
 
     thrlib_mutxLock(&mainCb->mutx);
 
@@ -566,10 +738,10 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
     else {
         fNameLen = comlib_strGetLen(fName);
         thrdMsg = comlib_memMalloc(sizeof(LoglibIntThrdMsgHdr) +
-                                   (sizeof(LoglibIntThrdMsgAvpHdr) + sizeof(UINT)) +
-                                   (sizeof(LoglibIntThrdMsgAvpHdr) + fNameLen+1) +
-                                   (sizeof(LoglibIntThrdMsgAvpHdr) + sizeof(UINT)) +
-                                   (sizeof(LoglibIntThrdMsgAvpHdr) + LOGLIB_LOG_MAX_BUF_LEN));
+                (sizeof(LoglibIntThrdMsgAvpHdr) + sizeof(UINT)) +
+                (sizeof(LoglibIntThrdMsgAvpHdr) + fNameLen+1) +
+                (sizeof(LoglibIntThrdMsgAvpHdr) + sizeof(UINT)) +
+                (sizeof(LoglibIntThrdMsgAvpHdr) + LOGLIB_LOG_MAX_BUF_LEN));
     }
 
     curTm = time(NULL);
@@ -585,6 +757,7 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
         COM_GET_LNKLST_FIRST(&apndInfo->apndLL, lnkNode);
         if(lnkNode == NULL){
             thrlib_mutxUnlock(&mainCb->mutx);
+            loglibInt_globUnlock();
             return RC_OK;
         }
 
@@ -626,8 +799,8 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
                 logBufLen = 0;
 
                 ret = loglibInt_msicPrntHdr(apndCb, lvl, curTms, fName, comlib_strGetLen(fName), line, 
-                                            &logBuf[logBufLen], (LOGLIB_LOG_MAX_BUF_LEN - logBufLen), 
-                                            &hdrLen);
+                        &logBuf[logBufLen], (LOGLIB_LOG_MAX_BUF_LEN - logBufLen), 
+                        &hdrLen);
 
                 logBufLen += hdrLen;
 
@@ -642,6 +815,7 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
                 ret = loglibInt_apndWrite(apndCb, lvl, logBuf, curTms);
                 if(ret != RC_OK){
                     thrlib_mutxUnlock(&mainCb->mutx);
+                    loglibInt_globUnlock();
                     return ret;
                 }
             }/* end of else */
@@ -696,7 +870,7 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
         /* make buffer */
         va_start(ap, fmt);
 
-        logBufLen = snprintf(logBuf, LOGLIB_LOG_MAX_BUF_LEN, fmt, ap);
+        logBufLen = vsnprintf(logBuf, LOGLIB_LOG_MAX_BUF_LEN, fmt, ap);
         if(LOGLIB_LOG_MAX_BUF_LEN <= logBufLen){
             logBufLen = LOGLIB_LOG_MAX_BUF_LEN-1;
             logBuf[LOGLIB_LOG_MAX_BUF_LEN] = '\0';
@@ -719,6 +893,7 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
             LOG_LOG(LOG_INT_ERR,"Log message push failed(ret=%d)\n",ret);
             comlib_memFree(thrdMsg);
             thrlib_mutxUnlock(&mainCb->mutx);
+            loglibInt_globUnlock();
             return LOGERR_THRD_QUE_PUSH_FAILED;
         }
 
@@ -727,6 +902,18 @@ FT_PUBLIC RT_RESULT loglib_apiLogWrite(LoglibCb *loglibCb, UINT lvl, CONST CHAR 
 
     thrlib_mutxUnlock(&mainCb->mutx);
 
+    loglibInt_globUnlock();
+
     return RC_OK;
+}
+
+FT_PUBLIC RT_RESULT loglib_apiChkMaxLogLvl(UINT lvl)
+{
+    return loglibInt_globChkMaxLogLvl(lvl);
+}
+
+FT_PUBLIC UINT loglib_apiGetMaxLogLvl(VOID)
+{
+    return loglibInt_globGetMaxLogLvl();
 }
 

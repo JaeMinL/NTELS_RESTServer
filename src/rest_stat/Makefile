@@ -26,7 +26,7 @@ ENV = -Wall  -DLOGLIB_DISP_ENV_LVL -DLOGLIB_DISP_ENV_FILE -DLOGLIB_DISP_ENV_LINE
 COPTS     = -g  -lpthread -luriparser -lxml2 -lmicrohttpd -lmysqlclient -ljson -ljson-c
 #IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib64/mysql
 #IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib/ -L/usr/lib64 -L/usr/lib/mysql
-IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib/ -L/usr/lib64 -L/usr/lib/mysql -L/usr/include/json -L/usr/include/json-c
+IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib/ -L/usr/lib64/mysql -L/usr/lib/mysql -L/usr/include/json -L/usr/include/json-c
 
 POPTS     = $(DEBUG) $(DEBUG_TRC)
 
@@ -38,6 +38,7 @@ LIBS      = \
 		$(BASE_HOME)/lib/liblog.a\
 		$(BASE_HOME)/lib/libthr.a\
 		$(BASE_HOME)/lib/libcom.a\
+		$(BASE_HOME)/lib/libtoml.a\
 
 
 SRCS		= main.c change_date.c
@@ -51,7 +52,7 @@ DEST			= ./
 #
 #---------------------------------------------------------------------
 #
-all:: $(AOUT) 
+all:: $(AOUT) install
 
 .SUFFIXES: .c .o
 .c.o:
@@ -61,6 +62,7 @@ $(AOUT): $(OBJS)
 		$(CC) $(COPTS) $(ENV) $(LOPTS) -o $(AOUT) $(IOPTS) $(POPTS) $(OBJS) $(LIBS);\
 
 install:
+	cp $(AOUT) ../../bin
 
 clean:
 	\rm -f $(OBJS) $(AOUT) core ;\

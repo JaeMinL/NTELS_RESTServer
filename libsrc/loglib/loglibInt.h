@@ -24,6 +24,8 @@ extern "C" {
 #define LOG_INT_NOTY                         2
 #define LOG_INT_DBG                          3
 
+#define LOGLIB_MAX_ENTRY_CNT                 256
+
 #define LOGLIB_LOG_MAX_BUF_LEN               3120
 
 #define LOGLIB_THRD_MSG_CODE_LOG             1

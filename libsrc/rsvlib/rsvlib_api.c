@@ -91,7 +91,6 @@ FT_PUBLIC RT_RESULT rsvlib_apiSetLogFunc(UINT lvl, RsvlibLogFunc logFunc)
 FT_PUBLIC RT_RESULT rsvlib_apiSetRule(UINT id, UINT mthod, CHAR *url, CHAR *query, VOID *usrArg, RsvlibProcFunc func)
 {
     SINT ret = RC_OK;
-
     RsvlibIntCb *rsvlibCb = NULL;
     RsvlibIntSvrRule *svrRule = NULL;
     UINT mthodId = 0;
@@ -102,12 +101,13 @@ FT_PUBLIC RT_RESULT rsvlib_apiSetRule(UINT id, UINT mthod, CHAR *url, CHAR *quer
         return RSVERR_RSVLIB_CB_NOT_EXIST;
     }
 
-    /*
-    if(rsvlibCb->runFlg == flag){
+    thrlib_mutxLock(&rsvlibCb->runMutx);
+
+    if(rsvlibCb->runFlg == RC_TRUE){
         thrlib_mutxUnlock(&rsvlibCb->runMutx);
         return RSVERR_ALREADY_RUNNING;
     }
-*/
+
     switch(mthod){
         case RSV_MTHOD_GET:  mthodId = RRL_MTHOD_GET;  break;
         case RSV_MTHOD_POST: mthodId = RRL_MTHOD_POST; break;
@@ -387,46 +387,12 @@ FT_PUBLIC RT_RESULT rsvlib_apiSetRspDat(RsvlibSesCb *sesCb, CHAR *rspDat, BOOL c
     return RC_OK;
 }
 
-/*=================================*/
 FT_PUBLIC RT_RESULT rsvlib_apiStop(UINT id)
 {
-    return rsvlibInt_mainStop(id);
-}
-
-FT_PUBLIC RT_RESULT rsvlib_apiDstry(UINT id)
-{
-#if 0
-    SINT ret = 0;
-    RsvlibIntCb *rsvlibIntCb = NULL;
-    rsvlibIntCb = rsvlibInt_globGetRsvlibIntCb(id);
-    if(rsvlibIntCb == NULL){
-        RSV_LOG(RSV_ERR,"rsvlibInt already destroy\n");
-        return RSVERR_RSVLIB_CB_NOT_EXIST;
-    }
-
-	RsvlibIntCb *rsvlibCb = NULL;
-	rsvlibCb = rsvlibInt_globGetRsvlibIntCb(id);
-	RrllibCb *rrlCb = rsvlibCb->svrThrdMainCb.rrlCb;
-	
-	RrllibResPathLst *resPathLst = NULL;
-	ComlibHashTbl *hashTbl = NULL;
-	
-	resPathLst = rrlCb->resPathLst;
-	hashTble = &resPathLst->resPathHT;
-	comlib_memFree(hashTble->entry);
-
-    /* init svr url */
-    ret = rrllib_mainDstry(&rsvlibIntCb->svrThrdMainCb.rrlCb);
-    if(ret != RC_OK){
-        RSV_LOG(RSV_ERR,"Rsvlib rule destroy failed(ret=%d)\n",ret);
-        return RSVERR_RULE_INIT_FAILED;
-        //return RSVERR_RULE_DSTRY_FAILED
-    }
-#endif
+    rsvlibInt_mainStop(id);
 
     return RC_OK;
 }
-/*=================================*/
 
 FT_PUBLIC RT_RESULT rsvlib_apiFindArg(RsvlibSesCb *sesCb, CHAR *name, RrllibDocArg **rt_docArg)
 {

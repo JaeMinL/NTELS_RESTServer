@@ -7,7 +7,8 @@
 MAKE            = gmake
 RM              = rm -rf
 
-SOURCES         = libsrc\
+SOURCES         = libextsrc\
+                  libsrc\
                   src\
 
 all::
@@ -23,6 +24,9 @@ clean::
 	do \
 		(cd $$i ; echo "cleaning all in ./$$i" ; \
 			$(MAKE) clean; )\
-	done\
+	done
+	rm -rf ./include
+	rm -rf ./lib
+
 
 install::

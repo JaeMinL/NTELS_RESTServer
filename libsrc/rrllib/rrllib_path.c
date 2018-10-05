@@ -3,6 +3,8 @@
 #include "gendef.h"
 #include "comlib.h"
 #include "comlib.x"
+#include "thrlib.h"
+#include "thrlib.x"
 #include "rrllib.h"
 #include "rrllib.x"
 
@@ -465,7 +467,7 @@ FT_PUBLIC RT_RESULT rrllib_pathDstryPath(RrllibResPathLst *resPathLst, RrllibRes
     if(ret != RC_OK){
         RRL_LOG(RRL_ERR,"Linked list delete failed(ret=%d)\n",ret);
     }
-    
+
     /* mthod dstory */
     while(1){
         lnkNode = comlib_lnkLstGetFirst(&resPath->mthodLL);
@@ -481,7 +483,6 @@ FT_PUBLIC RT_RESULT rrllib_pathDstryPath(RrllibResPathLst *resPathLst, RrllibRes
         }
 
         comlib_memFree(resMthod);
-	
     }/* end of while(1) */
 
     if(resPath->nxtPathLst != NULL){
@@ -518,10 +519,8 @@ FT_PUBLIC RT_RESULT rrllib_pathDstryPathLst(RrllibResPathLst *resPathLst)
         }
     }/* end of while(1) */
 
-    ComlibHashTbl *resPathHT = &resPathLst->resPathHT;
-    comlib_hashTblDstry(resPathHT);
-
     comlib_memFree(resPathLst);
 
     return RC_OK;
 }
+

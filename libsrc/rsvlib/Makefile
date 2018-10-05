@@ -34,6 +34,8 @@ $(TARGET)	: $(OBJS)
 all			: clean $(TARGET)
 
 install     :
+	    mkdir -p $(TARGET_DIR)
+		mkdir -p $(TARGET_INC)
 		cp $(TARGET) $(TARGET_DIR)
 		cp rsvlib.h $(TARGET_INC)
 		cp rsvlib.x $(TARGET_INC)

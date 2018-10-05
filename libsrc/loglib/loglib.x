@@ -93,27 +93,29 @@ struct LoglibCfg{
     LoglibApndCfg              dfltApndCfg;
 };
 
-struct LoglibCb{
-    UINT                       logLvl;
-    LoglibMainCb               mainCb;
-};
-
 FT_PUBLIC RT_RESULT       loglib_apiGlobInit            (UINT bit);
-FT_PUBLIC RT_RESULT       loglib_apiLoadCfg             (LoglibCb *loglibCb, CHAR *cfgFile, CHAR *name);
-FT_PUBLIC RT_RESULT       loglib_apiInitLoglibCb        (LoglibCb *loglibCb, LoglibCfg *cfg);
-FT_PUBLIC RT_RESULT       loglib_apiDstryLoglibCb       (LoglibCb *loglibCb);
-FT_PUBLIC RT_RESULT       loglib_apiRegApnd             (LoglibCb *loglibCb, CHAR *name, UINT type, LoglibApndCfg *apndCfg);
-FT_PUBLIC RT_RESULT       loglib_apiDeregApnd           (LoglibCb *loglibCb, CHAR *name);
-FT_PUBLIC RT_RESULT       loglib_apiSetApndLogLvl       (LoglibCb *loglibCb, CHAR *name, U_32 logLvlBit);
-FT_PUBLIC RT_RESULT       loglib_apiSetDispHdr          (LoglibCb *loglibCb, CHAR *apndName, U_32 dispBit);
-FT_PUBLIC RT_RESULT       loglib_apiSetDispHdrToPrev    (LoglibCb *loglibCb, CHAR *apndName);
-FT_PUBLIC RT_RESULT       loglib_apiGetDispHdr          (LoglibCb *loglibCb, CHAR *apndName, U_32 *rt_dispBit);
-FT_PUBLIC RT_RESULT       loglib_apiSetAllDispHdr       (LoglibCb *loglibCb, U_32 dispBit);
-FT_PUBLIC RT_RESULT       loglib_apiSetAllDispHdrToPrev (LoglibCb *loglibCb);
-FT_PUBLIC U_32            loglib_apiGetDfltDispHdr      (LoglibCb *loglibCb);
-FT_PUBLIC RT_RESULT       loglib_apiSetLogLvl           (LoglibCb *loglibCb, UINT lvl);
-FT_PUBLIC UINT            loglib_apiGetLogLvl           (LoglibCb *loglibCb);
-FT_PUBLIC RT_RESULT       loglib_apiLogWrite            (LoglibCb *loglibCb, UINT lvl, CONST CHAR *fName, UINT line, 
+#ifndef LOGLIB_XML_CONFIG_DISABLE
+FT_PUBLIC RT_RESULT       loglib_apiLoadXml             (CONST CHAR *cfgFile, CONST CHAR *name);
+#endif
+#ifndef LOGLIB_TOML_CONFIG_DISABLE
+FT_PUBLIC RT_RESULT       loglib_apiLoadToml            (CONST CHAR *cfgFile, CONST CHAR *name);
+#endif
+FT_PUBLIC RT_RESULT       loglib_apiInit                (CHAR *name, LoglibCfg *cfg);
+FT_PUBLIC RT_RESULT       loglib_apiDstry               (CHAR *name);
+FT_PUBLIC RT_RESULT       loglib_apiRegApnd             (CHAR *name, CHAR *apndName, UINT type, LoglibApndCfg *apndCfg);
+FT_PUBLIC RT_RESULT       loglib_apiDeregApnd           (CHAR *name, CHAR *apndName);
+FT_PUBLIC RT_RESULT       loglib_apiSetApndLogLvl       (CHAR *name, CHAR *apndName, U_32 logLvlBit);
+FT_PUBLIC RT_RESULT       loglib_apiSetDispHdr          (CHAR *name, CHAR *apndName, U_32 dispBit);
+FT_PUBLIC RT_RESULT       loglib_apiSetDispHdrToPrev    (CHAR *name, CHAR *apndName);
+FT_PUBLIC RT_RESULT       loglib_apiGetDispHdr          (CHAR *name, CHAR *apndName, U_32 *rt_dispBit);
+FT_PUBLIC RT_RESULT       loglib_apiSetAllDispHdr       (CHAR *name, U_32 dispBit);
+FT_PUBLIC RT_RESULT       loglib_apiSetAllDispHdrToPrev (CHAR *name);
+FT_PUBLIC U_32            loglib_apiGetDfltDispHdr      (VOID);
+FT_PUBLIC RT_RESULT       loglib_apiSetLogLvl           (CHAR *name, UINT lvl);
+FT_PUBLIC UINT            loglib_apiGetLogLvl           (CHAR *name);
+FT_PUBLIC RT_RESULT       loglib_apiChkMaxLogLvl        (UINT lvl);
+FT_PUBLIC UINT            loglib_apiGetMaxLogLvl        (VOID);
+FT_PUBLIC RT_RESULT       loglib_apiLogWrite            (CONST CHAR *name , UINT lvl, CONST CHAR *fName, UINT line, 
                                                          CONST CHAR *fmt, ...);
 
 #ifdef __cplusplus

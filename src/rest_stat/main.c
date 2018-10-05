@@ -634,31 +634,94 @@ FT_PUBLIC VOID logPrnt(UINT lvl, CHAR *file, UINT line, CHAR *logStr)
     printf("[%d][%s:%d] %s\n",lvl, file, line, logStr);
 }
 
-int main()
+int main(int argc, char **argv)
 {
     SINT ret = RC_OK;
+    SINT opt = 0;
+#if 0
+    CHAR cfgPath[MAIN_CFG_PATH_LEN];
+#endif
+    CHAR logCfgPath[MAIN_CFG_PATH_LEN];
     LoglibCfg logCfg;
     RsvlibGenCfg rsvCfg;
-    LoglibCb loglibCb;
-    
+
+#if 0
+    cfgPath[0] = '\0';
+#endif
+    logCfgPath[0] = '\0';
+
+    while(1){
+        opt = getopt(argc, argv,"c:l:h:");
+        if(opt == -1){
+            break;
+        }
+
+        switch(opt){
+#if 0
+            case 'c':
+                {
+                    comlib_strSNPrnt(cfgPath, MAIN_CFG_PATH_LEN, "%s", optarg);
+                }
+                break;
+#endif
+            case 'l':
+                {
+                    comlib_strSNPrnt(logCfgPath, MAIN_CFG_PATH_LEN, "%s", optarg);
+                }
+                break;
+            case 'h':
+                {
+                    fprintf(stderr,"usage : rest_stat -c [config path] -l [log config path]\n");
+                    exit(1);
+                }
+                break;
+            default:
+                {
+                    fprintf(stderr,"option \"%c\" is unknown\n",opt);
+                    fprintf(stderr,"usage : rest_stat -c [config path] -l [log config path]\n");
+                    exit(1);
+                }
+                break;
+        }/* end of switch(opt) */
+    }/* end of while */
+
+#if 0
+    if(cfgPath[0] == '\0'){
+        fprintf(stderr,"CONFIG NOT EXIST\n");
+        exit(1);
+    }
+#endif
+
+    if(logCfgPath[0] == '\0'){
+        fprintf(stderr,"LOG CONFIG NOT EXIST\n");
+        exit(1);
+    }
+
+
     /* log setting */
     LOGLIB_GLOB_INIT();
 
     LOGLIB_INIT_CFG(&logCfg);
 
-    loglib_apiInitLoglibCb(&loglibCb, &logCfg);
+    ret = loglib_apiLoadToml(logCfgPath, "REST_IF");
+    if(ret != RC_OK){
+        fprintf(stderr,"Log config load failed(ret=%d)\n",ret);
+    }
+
+
+    LOGLIB_NOTY("REST","REST INTERFACE START\n");
 
     /* rest server setting */
     RSV_INIT_GEN_CFG(&rsvCfg, 8800);
 
     ret = rsvlib_apiInit(1, &rsvCfg);
     if(ret != RC_OK){
-        LOGLIB_ERR(&loglibCb, "REST SERVER INIT FAILED(ret=%d)\n", ret);
+        LOGLIB_ERR("REST","REST SERVER INIT FAILED(ret=%d)\n", ret);
         return RC_NOK;
     }
 
     rsvlib_apiSetLogFunc(RSV_DBG, logPrnt);
-    
+
     /* url rule setting */
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/host/1min", "[name][ip]", NULL, Host_1min);
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/host/5min", "[name][ip]", NULL, Host_5min);
@@ -669,7 +732,7 @@ int main()
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/svc/5min", "{name}", NULL, Svc_5min);
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/svc/hour", "{name}", NULL, Svc_hour);    
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/svc/day", "{name}", NULL, Svc_day);  
-  
+
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/host/1min/term", "[start] [end]", NULL, Host_1min_time);
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/host/5min/term", "[start] [end]", NULL, Host_5min_time);
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/host/hour/term", "[start] [end]", NULL, Host_hour_time);
@@ -681,7 +744,6 @@ int main()
     ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/svc/day/term", "[start] [end]", NULL, Svc_hour_time);
 
     /* run rest server */
-    
     rsvlib_apiRun(1);
 
     while(1){
@@ -689,7 +751,7 @@ int main()
     }
     //exit(1);
     //rsvlib_apiDstry(1);
-    loglib_apiDstryLoglibCb(&loglibCb);	
+    //loglib_apiDstryLoglibCb(&loglibCb);	
 
     return 0;
 }

@@ -24,6 +24,8 @@ $(TARGET)	: $(OBJS)
 		$(AR) rcv $@ $(OBJS)
 
 all			: 
+	    mkdir -p $(TARGET_DIR)
+		mkdir -p $(TARGET_INC)
 		cp *.h $(TARGET_INC)
 		cp *.x $(TARGET_INC)
 

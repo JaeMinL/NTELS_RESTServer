@@ -112,6 +112,7 @@ struct RrllibCb{
 
 struct RrllibGlobCb{
     UINT                    logLvl;
+    ThrlibMutx              mutx;
     UINT                    tmpBufLen;
     CHAR                    tmpBuf[RRLLIB_MAX_TMP_BUF_LEN];
     RrllibLogFunc           logFunc;

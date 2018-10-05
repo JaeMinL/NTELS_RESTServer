@@ -4,6 +4,8 @@
 #include "gendef.h"
 #include "comlib.h"
 #include "comlib.x"
+#include "thrlib.h"
+#include "thrlib.x"
 #include "rrllib.h"
 #include "rrllib.x"
 
@@ -47,7 +49,10 @@ FT_PUBLIC RT_RESULT rrllib_globLogPrnt(UINT lvl, CHAR *file, UINT line, CONST CH
 {
     va_list ap;
 
+    thrlib_mutxLock(&intGlobCb.mutx);
+
     if(intGlobCb.logFunc == NULL){
+        thrlib_mutxUnlock(&intGlobCb.mutx);
         return RC_OK;
     }
 
@@ -58,6 +63,8 @@ FT_PUBLIC RT_RESULT rrllib_globLogPrnt(UINT lvl, CHAR *file, UINT line, CONST CH
     intGlobCb.logFunc(lvl, file, line, intGlobCb.tmpBuf);
 
     va_end(ap);
+
+    thrlib_mutxUnlock(&intGlobCb.mutx);
 
     return RC_OK;
 }
@@ -93,6 +100,8 @@ FT_PUBLIC RT_RESULT rrllib_globInit()
     intGlobCb.tmpBufLen = 0;
     intGlobCb.logFunc = NULL;
     intGlobCb.dispFunc = NULL;
+
+    thrlib_mutxInit(&intGlobCb.mutx);
 
     intGlobInitFlg = RC_TRUE;
 

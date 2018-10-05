@@ -49,6 +49,8 @@ extern "C" {
 #define LOGLIB_APND_DISP_NOTY_LOG_BIT     0x2
 #define LOGLIB_APND_DISP_DBG_LOG_BIT      0x4
 
+#define LOGLIB_LVL_CNT                    4
+#define LOGLIB_LVL_NONE                   0
 #define LOGLIB_LVL_ERR                    1
 #define LOGLIB_LVL_NOTY                   2
 #define LOGLIB_LVL_DBG                    3
@@ -69,7 +71,7 @@ extern "C" {
 #define LOGLIB_DFLT_MAX_LOG_SIZE          5242880 /* 500mb */
 
 #define LOGLIB_LOG_PATH_MAX_LEN           1024
-#define LOGLIB_LOG_NAME_MAX_LEN           128
+#define LOGLIB_LOG_NAME_MAX_LEN           24
 
 #define LOGLIB_APND_NAME_MAX_LEN          128
 
@@ -101,6 +103,14 @@ extern "C" {
 #define LOGERR_LOG_CFG_NOT_EXIST          124
 #define LOGERR_INVALID_SYSLOG_FAC_TYPE    125
 #define LOGERR_MAND_APND_DATA_NOT_EXIST   126
+#define LOGERR_LOG_NAME_LEN_TO_LONG       127
+#define LOGERR_LOG_NAME_NOT_EXIST         128
+#define LOGERR_LOG_REG_FAILED             129
+#define LOGERR_GLOB_NOT_BEEN_INITTIALIZED 130
+#define LOGERR_TOML_PARSING_FAILED        131
+#define LOGERR_HASH_TBL_INIT_FAILED       132
+#define LOGERR_LNK_LST_INIT_FAILED        133
+#define LOGERR_ALREADY_EXIST              134
 
 #define LOGLIB_INIT_CFG(_cfg){\
     (_cfg)->dfltLogLvl = LOGLIB_LVL_ERR;\
@@ -139,39 +149,33 @@ extern "C" {
 }
 
 #ifdef LOGLIB_ERR_ENB
-#define LOGLIB_ERR(_loglibCb, ...){\
-    UINT d_logLvl = 0;\
-    d_logLvl = (_loglibCb)->logLvl;\
-    if(d_logLvl >= LOGLIB_LVL_ERR){\
-        loglib_apiLogWrite((_loglibCb), LOGLIB_LVL_ERR, __BASE_FILE__, __LINE__, __VA_ARGS__);\
+#define LOGLIB_ERR(_name, ...){\
+    if(loglib_apiGetMaxLogLvl() >= LOGLIB_LVL_ERR){\
+        loglib_apiLogWrite((_name), LOGLIB_LVL_ERR, __BASE_FILE__, __LINE__, __VA_ARGS__);\
     }\
 };
 #else 
-#define LOGLIB_ERR(_loglibCb, ...)
+#define LOGLIB_ERR(_name, ...)
 #endif
 
 #ifdef LOGLIB_NOTY_ENB
-#define LOGLIB_NOTY(_loglibCb, ...){\
-    UINT d_logLvl = 0;\
-    d_logLvl = (_loglibCb)->logLvl;\
-    if(d_logLvl >= LOGLIB_LVL_NOTY){\
-        loglib_apiLogWrite((_loglibCb), LOGLIB_LVL_NOTY, __BASE_FILE__, __LINE__, __VA_ARGS__);\
+#define LOGLIB_NOTY(_name, ...){\
+    if(loglib_apiGetMaxLogLvl() >= LOGLIB_LVL_NOTY){\
+        loglib_apiLogWrite((_name), LOGLIB_LVL_NOTY, __BASE_FILE__, __LINE__, __VA_ARGS__);\
     }\
 };
 #else
-#define LOGLIB_NOTY(_loglibCb, ...)
+#define LOGLIB_NOTY(_name, ...)
 #endif
 
 #ifdef LOGLIB_DBG_ENB
-#define LOGLIB_DBG(_loglibCb, ...){\
-    UINT d_logLvl = 0;\
-    d_logLvl = (_loglibCb)->logLvl;\
-    if(d_logLvl >= LOGLIB_LVL_DBG){\
-        loglib_apiLogWrite((_loglibCb), LOGLIB_LVL_DBG, __BASE_FILE__, __LINE__, __VA_ARGS__);\
+#define LOGLIB_DBG(_name, ...){\
+    if(loglib_apiGetMaxLogLvl() >= LOGLIB_LVL_DBG){\
+        loglib_apiLogWrite((_name), LOGLIB_LVL_DBG, __BASE_FILE__, __LINE__, __VA_ARGS__);\
     }\
 };
 #else 
-#define LOGLIB_DBG(_loglibCb, ...)
+#define LOGLIB_DBG(_name, ...)
 #endif
 
 #ifdef __cplusplus

@@ -31,16 +31,27 @@ SYS_FIXED_FLAG  = AUTO
 
 ENV = -Wall 
 
-COPTS     = -g  -lpthread -lxml2 #-pg #+w2
+#COPTS     = -g  -lpthread -lxml2 #-pg #+w2
+COPTS     = -g #-lxml2 #-pg #+w2
 IOPTS     = -I$(INC_DIR) -I$(API_DIR)
 
-IHLROPTS  = -I. -I/usr/include/libxml2 #-DLOGLIB_DISP_ENV_LVL #-DLOGLIB_DISP_ENV_FILE -DLOGLIB_DISP_ENV_LINE
+IHLROPTS  = -I. -I/usr/include/libxml2 -I/usr/local/opt/libxml2/include/libxml2/ 
+IHLROPTS  += -DLOGLIB_ENB_LVL=3
+IHLROPTS  += -DLOGLIB_DISP_ENV_LVL 
+IHLROPTS  += -DLOGLIB_DISP_ENV_FILE 
+IHLROPTS  += -DLOGLIB_DISP_ENV_LINE
+IHLROPTS  += -DLOGLIB_DISP_ENV_TIME
+#IHLROPTS  += -DLOGLIB_TOML_CONFIG_DISABLE
+#IHLROPTS  += -DLOGLIB_XML_CONFIG_DISABLE
+IHLROPTS  += -DLOGLIB_LOG
 
-POPTS     = $(DEBUG) $(DEBUG_TRC)
+POPTS     = $(DEBUG) $(DEBUG_TRC) #-lxml2
 
 LIBS      = \
 		$(BASE_HOME)/lib/libthr.a\
 		$(BASE_HOME)/lib/libcom.a\
+		$(BASE_HOME)/lib/libtoml.a\
+        -lxml2\
 
 
 SRCS		= test.c \
@@ -48,7 +59,9 @@ SRCS		= test.c \
 			loglibInt_apnd.c\
 			loglibInt_thrd.c\
 			loglibInt_misc.c\
-			loglibInt_cfg.c\
+			loglibInt_load.c\
+			loglibInt_loadXml.c\
+			loglibInt_loadToml.c\
 			loglibInt_glob.c\
 			loglib_api.c\
 

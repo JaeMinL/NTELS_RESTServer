@@ -11,10 +11,12 @@
 #include "loglibInt.h"
 #include "loglibInt.x"
 
-FT_PUBLIC RT_RESULT loglibInt_init(LoglibIntMainCb *mainCb, LoglibCfg *cfg)
+FT_PUBLIC RT_RESULT loglibInt_init(CHAR *name, LoglibCfg *cfg, LoglibIntMainCb **rt_mainCb)
 {
     SINT ret = RC_OK;
+    UINT nameLen = 0;
     LoglibCfg dfltCfg;
+    LoglibIntMainCb *mainCb = NULL;
     LoglibIntApndCb *apndCb = NULL;
     LoglibCfg *cfgPtr = NULL;
 
@@ -22,6 +24,7 @@ FT_PUBLIC RT_RESULT loglibInt_init(LoglibIntMainCb *mainCb, LoglibCfg *cfg)
         dfltCfg.wrType = LOGLIB_WR_TYPE_DIR; /* default : DIRECT */
         dfltCfg.dfltApndType = LOGLIB_APND_TYPE_STDOUT;
         dfltCfg.dfltApndCfg.u.stdout.type = LOGLIB_STDOUT_TYPE_ERR;
+        dfltCfg.dfltLogLvl = LOGLIB_LVL_ERR;
 
         cfgPtr = &dfltCfg;
     }
@@ -42,6 +45,34 @@ FT_PUBLIC RT_RESULT loglibInt_init(LoglibIntMainCb *mainCb, LoglibCfg *cfg)
             return LOGERR_INVALID_APND_TYPE;
         }
     }
+
+    mainCb = comlib_memMalloc(sizeof(LoglibIntMainCb));
+
+    if(name != NULL){
+        nameLen = comlib_strGetLen(name);
+        if(nameLen >= (LOGLIB_LOG_NAME_MAX_LEN-1)){
+            return LOGERR_LOG_NAME_LEN_TO_LONG;
+        }
+
+        comlib_strCpy(mainCb->name, name);
+
+        comlib_strChgStrToUpper(name, nameLen, mainCb->name, nameLen);
+
+        mainCb->name[nameLen] = '\0';
+
+        mainCb->nameLen = nameLen;
+    }
+    else { /* default */
+        mainCb->nameLen = 0;
+    }
+
+    mainCb->hNode.key.key = mainCb->name;
+    mainCb->hNode.key.keyLen = mainCb->nameLen;
+    mainCb->hNode.data = mainCb;
+
+    mainCb->lnkNode.data = mainCb;
+
+    mainCb->logLvl = cfgPtr->dfltLogLvl;
 
     thrlib_mutxInit(&mainCb->mutx);
 
@@ -153,5 +184,8 @@ FT_PUBLIC RT_RESULT loglibInt_init(LoglibIntMainCb *mainCb, LoglibCfg *cfg)
         }
     }/* end of else */
 
+    (*rt_mainCb) = mainCb;
+
     return RC_OK;
 }
+

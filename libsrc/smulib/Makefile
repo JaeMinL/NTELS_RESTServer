@@ -35,6 +35,8 @@ $(TARGET)	: $(OBJS)
 all			: clean $(TARGET)
 
 install     :
+	    mkdir -p $(TARGET_DIR)
+		mkdir -p $(TARGET_INC)
 		cp $(TARGET) $(TARGET_DIR)
 		cp smulib.h $(TARGET_INC)
 		cp smulib.x $(TARGET_INC)

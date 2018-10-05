@@ -1,6 +1,8 @@
 #include "gendef.h"
 #include "comlib.h"
 #include "comlib.x"
+#include "thrlib.h"
+#include "thrlib.x"
 #include "rrllib.h"
 #include "rrllib.x"
 
