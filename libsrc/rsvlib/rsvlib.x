@@ -62,6 +62,7 @@ struct RsvlibSesCb{
 
 FT_PUBLIC RT_RESULT      rsvlib_apiSetLogFunc        (UINT lvl, RsvlibLogFunc logFunc);
 FT_PUBLIC RT_RESULT      rsvlib_apiInit              (UINT id, RsvlibGenCfg *genCfg);
+FT_PUBLIC RT_RESULT      rsvlib_apiDstry               (UINT id);
 FT_PUBLIC RT_RESULT      rsvlib_apiRun               (UINT id);
 FT_PUBLIC RT_RESULT      rsvlib_apiStop              (UINT id);
 FT_PUBLIC RT_RESULT      rsvlib_apiSetRule           (UINT id, UINT mthod, CHAR *url, CHAR *query,

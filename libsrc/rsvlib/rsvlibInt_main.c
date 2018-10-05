@@ -82,6 +82,14 @@ FT_PUBLIC RT_RESULT rsvlibInt_mainStop(UINT id)
         return RC_OK;
     }
 
+    /*
+    ret = rrllib_mainDstry(&rsvlibIntCb->svrThrdMainCb.rrlCb);
+    if(ret != RC_OK){
+        RSV_LOG(RSV_ERR,"Rsvlib rule Dstry failed(ret=%d)\n",ret);
+        comlib_memFree(rsvlibIntCb);
+        return RSVERR_RULE_INIT_FAILED;
+    }*/
+
     ret = rsvlibInt_svrStop(&rsvlibIntCb->svrThrdMainCb);
     if(ret != RC_OK){
         RSV_LOG(RSV_ERR,"Rsvlib server stop failed(ret=%d)\n",ret);
@@ -93,7 +101,7 @@ FT_PUBLIC RT_RESULT rsvlibInt_mainStop(UINT id)
     rsvlibIntCb->runFlg = RC_FALSE;
 
     thrlib_mutxUnlock(&rsvlibIntCb->runMutx);
-
+    
     return RC_OK;
 }
 
@@ -124,7 +132,6 @@ FT_PUBLIC RT_RESULT rsvlibInt_mainRun(UINT id)
     }
 
     thrlib_mutxUnlock(&rsvlibIntCb->runMutx);
-
     return RC_OK;
 }
 

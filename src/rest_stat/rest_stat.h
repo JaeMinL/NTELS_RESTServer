@@ -1,7 +1,7 @@
 #ifndef _REST_STAT_H_
 #define _REST_STAT_H_
 
-FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR **date_new);
+FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR *date_store);
 
 #ifdef __cplusplus
 extern "C" {

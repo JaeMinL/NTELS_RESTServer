@@ -387,12 +387,35 @@ FT_PUBLIC RT_RESULT rsvlib_apiSetRspDat(RsvlibSesCb *sesCb, CHAR *rspDat, BOOL c
     return RC_OK;
 }
 
+/*=================================*/
 FT_PUBLIC RT_RESULT rsvlib_apiStop(UINT id)
 {
-    rsvlibInt_mainStop(id);
+    return rsvlibInt_mainStop(id);
+}
+
+FT_PUBLIC RT_RESULT rsvlib_apiDstry(UINT id)
+{
+    SINT ret = 0;
+    RsvlibIntCb *rsvlibIntCb = NULL;
+    rsvlibIntCb = rsvlibInt_globGetRsvlibIntCb(id);
+    if(rsvlibIntCb == NULL){
+        RSV_LOG(RSV_ERR,"rsvlibInt already destroy\n");
+        return RSVERR_RSVLIB_CB_NOT_EXIST;
+    }
+
+	RrllibCb *	rrlCb->resPathLst->resPathHT
+
+    /* init svr url */
+    ret = rrllib_mainDstry(&rsvlibIntCb->svrThrdMainCb.rrlCb);
+    if(ret != RC_OK){
+        RSV_LOG(RSV_ERR,"Rsvlib rule destroy failed(ret=%d)\n",ret);
+        return RSVERR_RULE_INIT_FAILED;
+        //return RSVERR_RULE_DSTRY_FAILED
+    }
 
     return RC_OK;
 }
+/*=================================*/
 
 FT_PUBLIC RT_RESULT rsvlib_apiFindArg(RsvlibSesCb *sesCb, CHAR *name, RrllibDocArg **rt_docArg)
 {

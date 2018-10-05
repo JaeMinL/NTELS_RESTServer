@@ -1,0 +1,708 @@
+==19314== Memcheck, a memory error detector
+==19314== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==19314== Using Valgrind-3.12.0 and LibVEX; rerun with -h for copyright info
+==19314== Command: ./rest_stat
+==19314== Parent PID: 18777
+==19314== 
+==19314== 
+==19314== Process terminating with default action of signal 2 (SIGINT)
+==19314==    at 0x625E1AD: ??? (in /usr/lib64/libc-2.17.so)
+==19314==    by 0x625E043: sleep (in /usr/lib64/libc-2.17.so)
+==19314==    by 0x404047: main (main.c:596)
+==19314== 
+==19314== HEAP SUMMARY:
+==19314==     in use at exit: 261,588 bytes in 807 blocks
+==19314==   total heap usage: 19,833 allocs, 19,026 frees, 2,502,827 bytes allocated
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 25 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403DD8: main (main.c:571)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 26 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403E00: main (main.c:572)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 27 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403E28: main (main.c:573)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 28 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403E50: main (main.c:574)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 29 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403E78: main (main.c:576)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 30 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403EA0: main (main.c:577)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 31 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403EC8: main (main.c:578)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 32 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403EF0: main (main.c:579)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 33 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403F18: main (main.c:581)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 34 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403F40: main (main.c:582)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 35 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403F68: main (main.c:583)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 36 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403F90: main (main.c:584)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 37 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403FB8: main (main.c:586)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 38 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x403FE0: main (main.c:587)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 39 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x404008: main (main.c:588)
+==19314== 
+==19314== 72 bytes in 1 blocks are possibly lost in loss record 40 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x404633: rsvlib_apiSetRule (rsvlib_api.c:127)
+==19314==    by 0x404030: main (main.c:589)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 41 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403DD8: main (main.c:571)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 42 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E00: main (main.c:572)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 43 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E28: main (main.c:573)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 44 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E50: main (main.c:574)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 45 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E78: main (main.c:576)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 46 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EA0: main (main.c:577)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 47 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EC8: main (main.c:578)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 48 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EF0: main (main.c:579)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 49 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F18: main (main.c:581)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 50 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F40: main (main.c:582)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 51 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F68: main (main.c:583)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 52 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F90: main (main.c:584)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 53 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FB8: main (main.c:586)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 54 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FE0: main (main.c:587)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 55 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404008: main (main.c:588)
+==19314== 
+==19314== 80 bytes in 1 blocks are possibly lost in loss record 56 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4098C9: rrllib_mthodAdd (rrllib_mthod.c:18)
+==19314==    by 0x409575: rrllib_parseResCfg (rrllib_parse.c:962)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404030: main (main.c:589)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 58 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403DD8: main (main.c:571)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 59 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E78: main (main.c:576)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 60 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F18: main (main.c:581)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 61 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F40: main (main.c:582)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 62 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F68: main (main.c:583)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 63 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F90: main (main.c:584)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 64 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FB8: main (main.c:586)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 65 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FE0: main (main.c:587)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 66 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404008: main (main.c:588)
+==19314== 
+==19314== 88 bytes in 1 blocks are possibly lost in loss record 67 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x4070B8: rrllib_pathAddNxtFixPathLst (rrllib_path.c:236)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404030: main (main.c:589)
+==19314== 
+==19314== 552 bytes in 1 blocks are possibly lost in loss record 72 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E78: main (main.c:576)
+==19314== 
+==19314== 552 bytes in 1 blocks are possibly lost in loss record 73 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EA0: main (main.c:577)
+==19314== 
+==19314== 552 bytes in 1 blocks are possibly lost in loss record 74 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EC8: main (main.c:578)
+==19314== 
+==19314== 552 bytes in 1 blocks are possibly lost in loss record 75 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EF0: main (main.c:579)
+==19314== 
+==19314== 608 bytes in 1 blocks are possibly lost in loss record 77 of 126
+==19314==    at 0x4C2B975: calloc (vg_replace_malloc.c:711)
+==19314==    by 0x4011F44: _dl_allocate_tls (in /usr/lib64/ld-2.17.so)
+==19314==    by 0x4E3E9C0: pthread_create@@GLIBC_2.2.5 (in /usr/lib64/libpthread-2.17.so)
+==19314==    by 0x55DE13F: ??? (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55E3258: MHD_start_daemon_va (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55E3C6C: MHD_start_daemon (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x4066EC: rsvlibInt_svrStart (rsvlibInt_svr.c:706)
+==19314==    by 0x405596: rsvlibInt_mainRun (rsvlibInt_main.c:124)
+==19314==    by 0x40403D: main (main.c:593)
+==19314== 
+==19314== 608 bytes in 1 blocks are possibly lost in loss record 78 of 126
+==19314==    at 0x4C2B975: calloc (vg_replace_malloc.c:711)
+==19314==    by 0x4011F44: _dl_allocate_tls (in /usr/lib64/ld-2.17.so)
+==19314==    by 0x4E3E9C0: pthread_create@@GLIBC_2.2.5 (in /usr/lib64/libpthread-2.17.so)
+==19314==    by 0x55DE13F: ??? (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55DFD67: ??? (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55E04BF: ??? (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55E2017: MHD_run_from_select (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55E21E8: ??? (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x55E23B1: ??? (in /usr/lib64/libmicrohttpd.so.10.22.0)
+==19314==    by 0x4E3DE24: start_thread (in /usr/lib64/libpthread-2.17.so)
+==19314==    by 0x629734C: clone (in /usr/lib64/libc-2.17.so)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 82 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403DD8: main (main.c:571)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 83 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E00: main (main.c:572)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 84 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E28: main (main.c:573)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 85 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E50: main (main.c:574)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 86 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F18: main (main.c:581)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 87 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F40: main (main.c:582)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 88 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F68: main (main.c:583)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 89 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F90: main (main.c:584)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 90 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FB8: main (main.c:586)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 91 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FE0: main (main.c:587)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 92 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404008: main (main.c:588)
+==19314== 
+==19314== 1,104 bytes in 2 blocks are possibly lost in loss record 93 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x409627: rrllib_queryAdd (rrllib_query.c:25)
+==19314==    by 0x4087E1: parse_queryParmCfg (rrllib_parse.c:406)
+==19314==    by 0x408906: parse_queryCfg (rrllib_parse.c:465)
+==19314==    by 0x409599: rrllib_parseResCfg (rrllib_parse.c:969)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404030: main (main.c:589)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 94 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E00: main (main.c:572)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 95 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E28: main (main.c:573)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 96 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E50: main (main.c:574)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 97 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EA0: main (main.c:577)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 98 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EC8: main (main.c:578)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 99 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403EF0: main (main.c:579)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 100 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F18: main (main.c:581)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 101 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F40: main (main.c:582)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 102 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F68: main (main.c:583)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 103 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F90: main (main.c:584)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 104 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FB8: main (main.c:586)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 105 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FE0: main (main.c:587)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 106 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404008: main (main.c:588)
+==19314== 
+==19314== 1,152 bytes in 1 blocks are possibly lost in loss record 107 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404030: main (main.c:589)
+==19314== 
+==19314== 1,408 bytes in 1 blocks are possibly lost in loss record 109 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40B681: loglibInt_apndInit (loglibInt_apnd.c:147)
+==19314==    by 0x40B275: loglibInt_init (loglibInt_init.c:71)
+==19314==    by 0x40A21E: loglib_apiInitLoglibCb (loglib_api.c:309)
+==19314==    by 0x403D23: main (main.c:557)
+==19314== 
+==19314== 2,304 bytes in 2 blocks are possibly lost in loss record 110 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403DD8: main (main.c:571)
+==19314== 
+==19314== 2,304 bytes in 2 blocks are possibly lost in loss record 111 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x406BFF: path_addPath (rrllib_path.c:59)
+==19314==    by 0x407330: rrllib_pathAddFixPath (rrllib_path.c:330)
+==19314==    by 0x408CC4: parse_resPathCfg (rrllib_parse.c:613)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E78: main (main.c:576)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 114 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403DD8: main (main.c:571)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 115 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403E78: main (main.c:576)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 116 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F18: main (main.c:581)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 117 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F40: main (main.c:582)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 118 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F68: main (main.c:583)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 119 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403F90: main (main.c:584)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 120 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FB8: main (main.c:586)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 121 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x403FE0: main (main.c:587)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 122 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404008: main (main.c:588)
+==19314== 
+==19314== 8,192 bytes in 1 blocks are possibly lost in loss record 123 of 126
+==19314==    at 0x4C29BE3: malloc (vg_replace_malloc.c:299)
+==19314==    by 0x40DC10: comlib_hashTblInit (comlib_hashTbl.c:413)
+==19314==    by 0x40712F: rrllib_pathAddNxtFixPathLst (rrllib_path.c:248)
+==19314==    by 0x408C70: parse_resPathCfg (rrllib_parse.c:599)
+==19314==    by 0x409505: rrllib_parseResCfg (rrllib_parse.c:941)
+==19314==    by 0x404796: rsvlib_apiSetRule (rsvlib_api.c:148)
+==19314==    by 0x404030: main (main.c:589)
+==19314== 
+==19314== LEAK SUMMARY:
+==19314==    definitely lost: 0 bytes in 0 blocks
+==19314==    indirectly lost: 0 bytes in 0 blocks
+==19314==      possibly lost: 124,048 bytes in 101 blocks
+==19314==    still reachable: 137,540 bytes in 706 blocks
+==19314==         suppressed: 0 bytes in 0 blocks
+==19314== Reachable blocks (those to which a pointer was found) are not shown.
+==19314== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==19314== 
+==19314== For counts of detected and suppressed errors, rerun with: -v
+==19314== ERROR SUMMARY: 87 errors from 87 contexts (suppressed: 0 from 0)

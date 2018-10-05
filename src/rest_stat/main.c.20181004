@@ -81,7 +81,7 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 
 	/*db connect & send qeury*/
 	conn = mysql_init(NULL);
-	if(conn == NULL){
+	if( conn == NULL){
 		fprintf(stderr, "%s\n", mysql_error(conn));
 		return RC_NOK;
 	}
@@ -130,8 +130,7 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 	while((row = mysql_fetch_row(res)) != NULL)
 	{
 		data_obj = json_object_new_object();
-		if(data_obj == NULL)
-		{
+		if(data_obj == NULL){
 			fprintf(stderr, "DbResult -> data_obj create fail!\n");
 			mysql_close(conn);
 			mysql_free_result(res);
@@ -147,8 +146,7 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 	json_object_object_add(who_obj, who, array_obj);
 
 	ret = rsvlib_apiSetRspDat(sesCb, (CHAR *)json_object_get_string(who_obj), RC_TRUE);
-	if(ret != RC_OK)
-	{
+	if(ret != RC_OK){
 		fprintf(stderr, "DbResult -> rsvlib_apiSetRspDat() call fail!\n");
 		mysql_free_result(res);
 		mysql_close(conn);
@@ -157,7 +155,7 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 
 	/*json object free*/
 	json_object_put(who_obj);
-	mysql_library_end();
+	
 	mysql_free_result(res);
 	mysql_close(conn);
 
@@ -194,9 +192,7 @@ FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
     	}
 	which = "IP";
     }
-    else{
-	which = "NAME";
-    }
+    else{which = "NAME";}
 
     ret = rsvlib_apiFirstArgVal(docArg, &strData, &strDataLen);
     if(ret != RC_OK){
@@ -205,9 +201,7 @@ FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
     }    
 
     /*create DBtable name*/
-    if(!comlib_strCmp("SERVICE", who)){
-	who_s = "SVC";
-    }
+    if(!comlib_strCmp("SERVICE", who)){who_s = "SVC";}
 
     /*create DBtable name*/
     if(term == NULL){
@@ -599,11 +593,17 @@ int main()
     rsvlib_apiRun(1);
 
     while(1){
-        sleep(1);
+        sleep(10);
+//	rsvlib_apiDstry(1); - REST API 디버그
+  // 	rsvlib_apiStop(1);
+//	loglib_apiDstryLoglibCb(&loglibCb);
     }
-    //exit(1);
-    //rsvlib_apiDstry(1);
-    loglib_apiDstryLoglibCb(&loglibCb);	
+    	
+    /*ret = rsvlib_apiInit(1, &rsvCfg);
+    if(ret != RC_OK){
+        LOGLIB_ERR(&loglibCb, "REST SERVER INIT FAILED(ret=%d)\n", ret);
+        return RC_NOK;
+    }*/
 
     return 0;
 }

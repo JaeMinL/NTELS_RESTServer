@@ -379,6 +379,7 @@ FT_PUBLIC RT_RESULT comlib_hashTblInit(ComlibHashTbl *hashTbl, CONST UINT nmbEnt
     /* set hash structure */
     hashTbl->dupFlg = dupFlg;
     hashTbl->nmbEntry = nmbEntry;
+    hashTbl->maxNodeBktCnt = 0;
 
     switch(hashType){
         case COM_HASH_TYPE_STRING:
@@ -432,11 +433,12 @@ FT_PUBLIC RT_RESULT comlib_hashTblInit(ComlibHashTbl *hashTbl, CONST UINT nmbEnt
 
 FT_PUBLIC RT_RESULT comlib_hashTblDstry(ComlibHashTbl *hashTbl)
 {
-	GEN_CHK_ERR_RET(hashTbl == NULL,
+    GEN_CHK_ERR_RET(hashTbl == NULL,
 		COM_LOG(COM_ERR,"Invaild Hash List\n"),
 		COMERR_INVALID_HASHTBL);
 
-    comlib_memFree(hashTbl->entry);
+    ComlibHashEntry* entry = &hashTbl->entry;
+    comlib_memFree(entry);
 
     return RC_OK;
 }
