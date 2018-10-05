@@ -27,7 +27,7 @@
 #define DB_PW "sdv2016"
 #define DB_NAME "SDV"
 #define QUERY_LEN 1024
-#define TABLE_LEN 64
+#define TABLE_LEN 32
 #define CMP_LEN 1
 #define DATE_LEN 19
 
@@ -57,31 +57,31 @@ FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term);
 FT_PUBLIC RT_RESULT MakeQueryByTime(RsvlibSesCb *sesCb, CHAR *who, CHAR *term);
 
 
-FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
-	if(who == NULL || query == NULL || sesCb == NULL){
-		fprintf(stderr, "DbResult assertion failed \n");
-		return RC_NOK;
-	}
-	
-	printf("\n\n%s\n", query);
-	
+FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who)
+{
 	MYSQL *conn = NULL;
 	MYSQL_RES *res = NULL;
 	MYSQL_ROW row = NULL;
 	MYSQL_FIELD *fields = NULL;
 	UINT field_cnt = 0;
-	UINT i;
+	UINT i = 0;
 	UINT row_cnt = 0;
-
 	SINT ret = RC_NOK;
 	
 	json_object *who_obj = NULL;
 	json_object *data_obj = NULL;
 	json_object *array_obj = NULL;
 
+	if(who == NULL || query == NULL || sesCb == NULL)
+	{
+                fprintf(stderr, "DbResult assertion failed \n");
+                return RC_NOK;
+        }	
+	printf("\n%s\n", query);
 	/*db connect & send qeury*/
 	conn = mysql_init(NULL);
-	if(conn == NULL){
+	if(conn == NULL)
+	{
 		fprintf(stderr, "%s\n", mysql_error(conn));
 		return RC_NOK;
 	}
@@ -93,14 +93,16 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 		return RC_NOK;
 	}
 
-	if(mysql_query(conn, query)){
+	if(mysql_query(conn, query))
+	{
 		fprintf(stderr, "send query is failed : %s\n", mysql_error(conn));
 		mysql_close(conn);
 		return RC_NOK;
 	}
 
 	res = mysql_store_result(conn);
-	if(res == NULL){
+	if(res == NULL)
+	{
 		fprintf(stderr, "db data store is failed : %s\n", mysql_error(conn));
 		mysql_close(conn);
 		return RC_NOK;
@@ -112,14 +114,16 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 
 	/*change query result to json*/
 	who_obj = json_object_new_object();
-	if(who_obj == NULL){
+	if(who_obj == NULL)
+	{
 		fprintf(stderr, "DbResult -> who_obj create fail!\n");
 		mysql_close(conn);
 		return RC_NOK;
 	}
 	
 	array_obj = json_object_new_array();
-	if(array_obj == NULL){
+	if(array_obj == NULL)
+	{
 		fprintf(stderr, "DbResult -> array_obj create fail!\n");
 		mysql_close(conn);
 		mysql_free_result(res);
@@ -164,12 +168,8 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who){
 	return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
-    if(who == NULL || sesCb == NULL){
-	fprintf(stderr, "MakeQueryByInfo assertion failed \n");
-	return RC_NOK;
-    }
-
+FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
+{
     RrllibDocArg *docArg = NULL;
     UINT strDataLen = 0;
     CONST CHAR *strData = NULL;
@@ -179,46 +179,76 @@ FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
     CHAR *argName = "name";
     CHAR *argIP = "ip";
     CHAR *who_s = who;
+    UINT i = 0;
 
     query[0] = '\0';
     table[0] = '\0';
 
     SINT ret = RC_NOK;
+
+    if(who == NULL || sesCb == NULL)
+    {
+        fprintf(stderr, "MakeQueryByInfo assertion failed \n");
+        return RC_NOK;
+    }
+    
     /*find arg value 'ip' or 'name' */
     ret = rsvlib_apiFindArg(sesCb, argName, &docArg);
-    if(ret != RC_OK){
+    if(ret != RC_OK)
+    {
 	ret = rsvlib_apiFindArg(sesCb, argIP, &docArg);
-    	if(ret != RC_OK){
+    	if(ret != RC_OK)
+	{
         	fprintf(stderr, "no arg : %s & %s\n", argIP, argName);
         	return RC_NOK;
     	}
 	which = "IP";
     }
-    else{
+    else
+    {
 	which = "NAME";
     }
 
     ret = rsvlib_apiFirstArgVal(docArg, &strData, &strDataLen);
-    if(ret != RC_OK){
+    if(ret != RC_OK)
+    {
     	fprintf(stderr, "strName=%s\n", strData);
     	return RC_NOK;
     }    
 
     /*create DBtable name*/
-    if(!comlib_strCmp("SERVICE", who)){
+    if(!comlib_strCmp("SERVICE", who))
+    {
 	who_s = "SVC";
     }
 
     /*create DBtable name*/
-    if(term == NULL){
-    	snprintf(table, TABLE_LEN, "TSD_STAT_%s", who);
+    if(term == NULL)
+    {
+    	i = snprintf(table, TABLE_LEN, "TSD_STAT_%s", who);
+	if(i==0)
+	{
+		fprintf(stderr, "snprintf() make 'table' error");
+        	return RC_NOK;
+	}
     }
-    else{
-    	snprintf(table, TABLE_LEN, "TSD_STAT_%s_%s", who, term);
+    else
+    {
+    	i = snprintf(table, TABLE_LEN, "TSD_STAT_%s_%s", who, term);
+	if(i==0)
+        {
+                fprintf(stderr, "snprintf() make 'table' error");
+                return RC_NOK;
+        }
     }
     /*create DB Query*/
-    snprintf(query, QUERY_LEN, "SELECT b.%s_NAME, a.* FROM %s a, TSD_%s b WHERE a.%s_ID = b.%s_ID AND b.%s_%s = '%s'", who, table, who_s, who, who, who, which, strData); 
-    
+    i = snprintf(query, QUERY_LEN, "SELECT b.%s_NAME, a.* FROM %s a, TSD_%s b WHERE a.%s_ID = b.%s_ID AND b.%s_%s = '%s'", who, table, who_s, who, who, who, which, strData); 
+    if(i==0)
+    {
+	fprintf(stderr, "snprintf() make DB Query error");
+	return RC_NOK;
+    }    
+
     ret = DbResult(query, sesCb, who);
     if(ret != RC_OK)
     {
@@ -229,12 +259,8 @@ FT_PUBLIC RT_RESULT MakeQueryByInfo(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
     return RC_OK;
 }
 
-FT_PUBLIC RT_RESULT MakeQueryByTime(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
-    if(who == NULL || sesCb == NULL){
-	fprintf(stderr, "MakeQueryByTime assertion failed \n");
-	return RC_NOK;
-    }
-
+FT_PUBLIC RT_RESULT MakeQueryByTime(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
+{
     RrllibDocArg *docArg = NULL;
     UINT strSttLen = 0;
     UINT strEndLen = 0;
@@ -242,7 +268,6 @@ FT_PUBLIC RT_RESULT MakeQueryByTime(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
     CHAR CONST *strEnd = NULL;
     CHAR query[QUERY_LEN];
     CHAR table[TABLE_LEN];
-    CHAR where[QUERY_LEN];
     CHAR *arg_stt = "start";
     CHAR *arg_end = "end";
     CHAR *who_s = who;
@@ -252,98 +277,159 @@ FT_PUBLIC RT_RESULT MakeQueryByTime(RsvlibSesCb *sesCb, CHAR *who, CHAR *term){
 
     query[0] = '\0';
     table[0] = '\0';
-    where[0] = '\0';
     strStt_new[0] = '\0';
     strEnd_new[0] = '\0';
 
     SINT ret = RC_NOK;
 
+    if(who == NULL || sesCb == NULL)
+    {
+        fprintf(stderr, "MakeQueryByTime assertion failed \n");
+        return RC_NOK;
+    }
+
+    if(!comlib_strNCmp("SERVICE", who, comlib_strGetLen(who)))
+    {
+        who_s = "SVC";
+    }
+
+    /*create DB table name*/
+    if(term == NULL)
+    {
+        i = snprintf(table, TABLE_LEN, "TSD_STAT_%s", who);
+    	if(i<0 || i>=TABLE_LEN)
+        {
+                fprintf(stderr, "snprintf() make 'table' error");
+                return RC_NOK;
+        }
+    }
+    else
+    {
+        i = snprintf(table, TABLE_LEN, "TSD_STAT_%s_%s", who, term);
+    	if(i<0 || i>=TABLE_LEN)
+        {
+                fprintf(stderr, "snprintf() make 'table' error");
+                return RC_NOK;
+        }
+    }
+
+    /*create DB Query*/
+    i = snprintf(query, QUERY_LEN, "SELECT b.%s_NAME, a.* FROM %s a, TSD_%s b WHERE a.%s_ID = b.%s_ID ", who, table, who_s, who, who);
+    if(i<0 || i>= QUERY_LEN)
+    {
+        fprintf(stderr, "snprintf() make DB Query error");
+	return RC_NOK;
+    }
+
     ret = rsvlib_apiFindArg(sesCb, arg_stt, &docArg);
-    if(ret != RC_OK){
+    if(ret != RC_OK)
+    {
 	ret = rsvlib_apiFindArg(sesCb, arg_end, &docArg);
-	if(ret != RC_OK){
+	if(ret != RC_OK)
+	{
 		/*start and end value is null*/
-	    	snprintf(where, QUERY_LEN, " ");
 	}
-	else{
+	else
+	{
 		ret = rsvlib_apiFirstArgVal(docArg,&strEnd, &strEndLen);
-        	if(ret != RC_OK){
+        	if(ret != RC_OK)
+		{
                 	fprintf(stderr, "strEnd=%s\n", strEnd);
                 	return RC_NOK; 
        		}
 		ret = ChDate(strEnd, strEnd_new);
-		if(ret != RC_OK){
+		if(ret != RC_OK)
+		{
 			fprintf(stderr, "change 'end' date type is failed\n");
 			return RC_NOK;
 		}
 		/* ... ~ end*/
-		snprintf(where, QUERY_LEN, "AND PRC_DATE <= '%s' ", strEnd_new);
+		i += snprintf(query+i, QUERY_LEN-i, "AND PRC_DATE <= '%s' ", strEnd_new);
+		if(i<0 || i>= QUERY_LEN)
+                {
+                        fprintf(stderr, "snprintf() make DB Query add where error");
+			return RC_NOK;
+                }
 	}
 
     }
-    else{
-   		ret = rsvlib_apiFirstArgVal(docArg, &strStt, &strSttLen);
-	   	if(ret != RC_OK){
-	   		fprintf(stderr, "strStt=%s\n", strStt);
-			return RC_NOK;
-	   	}
-
-		ret = rsvlib_apiFindArg(sesCb, arg_end, &docArg);
-		if(ret != RC_OK){
-			/* start ~ ...*/
-			ret = ChDate(strStt, strStt_new);
-			if(ret != RC_OK){
-				fprintf(stderr, "change 'start' date type is failed\n");
-				return RC_NOK;
-			}
-		    snprintf(where, QUERY_LEN, "AND PRC_DATE >= '%s' ", strStt_new);
-		}
-		else{
-			ret = rsvlib_apiFirstArgVal(docArg, &strEnd, &strEndLen);
-			if(ret != RC_OK){
-				fprintf(stderr, "strEnd=%s\n", strEnd);
-				return RC_NOK;
-			}
-			else{
-				/* start ~ end*/
-				ret = ChDate(strStt, strStt_new);
-				if(ret != RC_OK){
-					fprintf(stderr, "change 'start' date type is failed\n");
-					return RC_NOK;
-				}
-				i += snprintf(where, QUERY_LEN, "AND PRC_DATE >= '%s' ", strStt_new);
-				
-				ret = ChDate(strEnd, strEnd_new);
-				if(ret != RC_OK){
-					fprintf(stderr, "change 'end' date type is failed\n");
-					return RC_NOK;
-				}
-				snprintf(where+i , QUERY_LEN, "AND PRC_DATE <= '%s' ", strEnd_new);
-			}
-		}
-		
-    }	
-
-    if(!comlib_strNCmp("SERVICE", who, comlib_strGetLen(who))){who_s = "SVC";}
-    /*create DB table name*/
-    if(term == NULL){
-	snprintf(table, TABLE_LEN, "TSD_STAT_%s", who);
-    }
-    else{
-	snprintf(table, TABLE_LEN, "TSD_STAT_%s_%s", who, term);
-    }
-
-    /*create DB Query*/
-    snprintf(query, QUERY_LEN, "SELECT b.%s_NAME, a.* FROM %s a, TSD_%s b WHERE a.%s_ID = b.%s_ID %s", who, table, who_s, who, who, where);
-	
-    ret = DbResult(query, sesCb, who);
+    else
+    {
+   	ret = rsvlib_apiFirstArgVal(docArg, &strStt, &strSttLen);
 	if(ret != RC_OK)
 	{
-		fprintf(stderr, "DbResult() error");
+	   	fprintf(stderr, "strStt=%s\n", strStt);
 		return RC_NOK;
 	}
 
-	return RC_OK;
+	ret = rsvlib_apiFindArg(sesCb, arg_end, &docArg);
+	if(ret != RC_OK)
+	{
+		/* start ~ ...*/
+		ret = ChDate(strStt, strStt_new);
+		if(ret != RC_OK)
+		{
+			fprintf(stderr, "change 'start' date type is failed\n");
+			return RC_NOK;
+		}
+		i += snprintf(query+i, QUERY_LEN-i, "AND PRC_DATE >= '%s' ", strStt_new);
+		if(i<0 || i>= QUERY_LEN)
+                {
+                        fprintf(stderr, "snprintf() make DB Query add where error");
+                        return RC_NOK;
+                }
+	}
+	else
+	{
+		ret = rsvlib_apiFirstArgVal(docArg, &strEnd, &strEndLen);
+			
+		if(ret != RC_OK)
+		{
+			fprintf(stderr, "strEnd=%s\n", strEnd);
+			return RC_NOK;
+		}
+		else
+		{
+			/* start ~ end*/
+			ret = ChDate(strStt, strStt_new);
+			if(ret != RC_OK)
+			{
+				fprintf(stderr, "change 'start' date type is failed\n");
+				return RC_NOK;
+			}
+			i += snprintf(query+i, QUERY_LEN-i, "AND PRC_DATE >= '%s' ", strStt_new);
+			if(i<0 || i>= QUERY_LEN)
+	                {
+                        	fprintf(stderr, "snprintf() make DB Query add where error");
+                        	return RC_NOK;
+                	}
+
+			ret = ChDate(strEnd, strEnd_new);
+			if(ret != RC_OK)
+			{
+				fprintf(stderr, "change 'end' date type is failed\n");
+				return RC_NOK;
+			}
+			i += snprintf(query+i , QUERY_LEN-i, "AND PRC_DATE <= '%s' ", strEnd_new);
+			if(i<0 || i>= QUERY_LEN)
+                        {
+                                fprintf(stderr, "snprintf() make DB Query add where error");
+                                return RC_NOK;
+                        }
+		}
+	}
+		
+    }	
+
+    //snprintf(query, QUERY_LEN, "SELECT b.%s_NAME, a.* FROM %s a, TSD_%s b WHERE a.%s_ID = b.%s_ID %s", who, table, who_s, who, who, where);
+	
+    ret = DbResult(query, sesCb, who);
+    if(ret != RC_OK)
+    {
+	fprintf(stderr, "DbResult() error");
+	return RC_NOK;
+    }
+    return RC_OK;
 }
 
 
