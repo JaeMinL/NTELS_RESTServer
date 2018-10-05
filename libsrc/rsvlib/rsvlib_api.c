@@ -395,6 +395,7 @@ FT_PUBLIC RT_RESULT rsvlib_apiStop(UINT id)
 
 FT_PUBLIC RT_RESULT rsvlib_apiDstry(UINT id)
 {
+#if 0
     SINT ret = 0;
     RsvlibIntCb *rsvlibIntCb = NULL;
     rsvlibIntCb = rsvlibInt_globGetRsvlibIntCb(id);
@@ -403,7 +404,16 @@ FT_PUBLIC RT_RESULT rsvlib_apiDstry(UINT id)
         return RSVERR_RSVLIB_CB_NOT_EXIST;
     }
 
-	RrllibCb *	rrlCb->resPathLst->resPathHT
+	RsvlibIntCb *rsvlibCb = NULL;
+	rsvlibCb = rsvlibInt_globGetRsvlibIntCb(id);
+	RrllibCb *rrlCb = rsvlibCb->svrThrdMainCb.rrlCb;
+	
+	RrllibResPathLst *resPathLst = NULL;
+	ComlibHashTbl *hashTbl = NULL;
+	
+	resPathLst = rrlCb->resPathLst;
+	hashTble = &resPathLst->resPathHT;
+	comlib_memFree(hashTble->entry);
 
     /* init svr url */
     ret = rrllib_mainDstry(&rsvlibIntCb->svrThrdMainCb.rrlCb);
@@ -412,6 +422,7 @@ FT_PUBLIC RT_RESULT rsvlib_apiDstry(UINT id)
         return RSVERR_RULE_INIT_FAILED;
         //return RSVERR_RULE_DSTRY_FAILED
     }
+#endif
 
     return RC_OK;
 }
