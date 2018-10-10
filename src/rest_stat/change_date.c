@@ -36,95 +36,109 @@ FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR *date_store){
 		return RC_NOK;
 	}	
 	
-	if(comlib_strGetLen(date_old) != DATE_LEN){
+	if(comlib_strGetLen(date_old) != DATE_LEN)
+	{
 		fprintf(stderr, "date type is not correct\n");
 		return RC_NOK;
 	}
 
 	count = comlib_strSpn(date_old, DATE_SCHEME_CHARS);
-	if(count != year_len || date_old[count] != '-'){
-		fprintf(stderr, "year type is not correct\n");
+	if(count != year_len || date_old[count] != '-')
+	{
+		LOGLIB_ERR("REST", "year type is not correct\n");
 		return RC_NOK;
 	}
 
 	i = snprintf(date_new, DATE_LEN, "%c%c%c%c-", date_old[0], date_old[1], date_old[2], date_old[3]);
 	if(i<0 || i>=DATE_LEN)
 	{
-		fprintf(stderr, "snprintf() append year error\n");
-                return RC_NOK;
+		LOGLIB_ERR("REST", "snprintf() append year error\n");
+		return RC_NOK;
 	}
 	stack += count+1;
 	
 	count = comlib_strSpn(&date_old[stack], DATE_SCHEME_CHARS);
-	if(count != other_len || date_old[stack-1] != '-' ){
-		fprintf(stderr, "month type is not correct\n");
+	if(count != other_len || date_old[stack-1] != '-' )
+	{
+		LOGLIB_ERR("REST", "month type is not correct\n");
 		return RC_NOK;
 	}
 		
 	i += snprintf(date_new+i, DATE_LEN-i , "%c%c-", date_old[stack], date_old[stack+1]);
-	if(i<0 || i>=DATE_LEN){
-                fprintf(stderr, "snprintf() append month error\n");
-                return RC_NOK;
-        }
+	if(i<0 || i>=DATE_LEN)
+	{
+		LOGLIB_ERR("REST", "snprintf() append month error\n");
+		return RC_NOK;
+	}
 	stack += count+1;
 	
 
 	count = comlib_strSpn(&date_old[stack], DATE_SCHEME_CHARS);
-	if(count != other_len || date_old[stack-1] != '-' ){
-		fprintf(stderr, "day type is not correct\n");
+	if(count != other_len || date_old[stack-1] != '-' )
+	{
+		LOGLIB_ERR("REST", "day type is not correct\n");
 		return RC_NOK;
 	}
 	i += snprintf(date_new+i, DATE_LEN-i , "%c%c", date_old[stack], date_old[stack+1]);
-	if(i<0 || i>=DATE_LEN){
-                fprintf(stderr, "snprintf() append day error\n");
-                return RC_NOK;
-        }
+	if(i<0 || i>=DATE_LEN)
+	{
+		LOGLIB_ERR("REST", "snprintf() append day error\n");
+		return RC_NOK;
+	}
 	stack += count+1;
 
-	if(date_old[stack-1] != '_'){
-		fprintf(stderr, "date type('_') change is failed\n");
+	if(date_old[stack-1] != '_')
+	{
+		LOGLIB_ERR("REST",  "date type('_') change is failed\n");
 		return RC_NOK;
 	}
 	i += snprintf(date_new+i, DATE_LEN-i , " ");
-	if(i<0 || i>=DATE_LEN){
-                fprintf(stderr, "snprintf() append '_' error\n");
-                return RC_NOK;
-        }	
+	if(i<0 || i>=DATE_LEN)
+	{
+		LOGLIB_ERR("REST", "snprintf() append '_' error\n");
+		return RC_NOK;
+	}	
 
 	count = comlib_strSpn(&date_old[stack], DATE_SCHEME_CHARS);
-	if(count != other_len){
-		fprintf(stderr, "hour type is not correct\n");
+	if(count != other_len)
+	{
+		LOGLIB_ERR("REST", "hour type is not correct\n");
 		return RC_NOK;
 	}
 	i += snprintf(date_new+i, DATE_LEN-i, "%c%c:", date_old[stack], date_old[stack+1]);	
-	if(i<0 || i>=DATE_LEN){
-                fprintf(stderr, "snprintf() append hour error\n");
-                return RC_NOK;
-        }
+	if(i<0 || i>=DATE_LEN)
+	{
+		LOGLIB_ERR("REST", "snprintf() append hour error\n");
+		return RC_NOK;
+	}
 	stack += count+1;
 	
 	count = comlib_strSpn(&date_old[stack], DATE_SCHEME_CHARS);
-	if(count != other_len || date_old[stack-1] != ':' ){
-		fprintf(stderr, "minute type is not correct\n");
+	if(count != other_len || date_old[stack-1] != ':' )
+	{
+		LOGLIB_ERR("REST", "minute type is not correct\n");
 		return RC_NOK;
 	}
 	i += snprintf(date_new+i, DATE_LEN-i, "%c%c:", date_old[stack], date_old[stack+1]);
-	if(i<0 || i>=DATE_LEN){
-                fprintf(stderr, "snprintf() append minute error\n");
-                return RC_NOK;
-        }
+	if(i<0 || i>=DATE_LEN)
+	{
+		LOGLIB_ERR("REST", "snprintf() append minute error\n");
+		return RC_NOK;
+	}
 	stack += count+1;
 
 	count = comlib_strSpn(&date_old[stack], DATE_SCHEME_CHARS);
-	if(count != other_len || date_old[stack-1] != ':' ){
-		fprintf(stderr, "second type is not correct\n");
+	if(count != other_len || date_old[stack-1] != ':' )
+	{
+		LOGLIB_ERR("REST", "second type is not correct\n");
 		return RC_NOK;
 	}
 	i += snprintf(date_new+i, DATE_LEN-i, "%c%c", date_old[stack], date_old[stack+1]);
-	if(i<0 || i>DATE_LEN){
-                fprintf(stderr, "snprintf() append second error\n");
-                return RC_NOK;
-        }	
+	if(i<0 || i>DATE_LEN)
+	{
+		LOGLIB_ERR("REST", "snprintf() append second error\n");
+		return RC_NOK;
+	}	
 
 	snprintf((CHAR *)date_store, DATE_LEN+1, "%s", date_new);
 	return RC_OK;

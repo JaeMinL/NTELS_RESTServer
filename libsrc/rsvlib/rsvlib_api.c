@@ -370,7 +370,7 @@ FT_PUBLIC RT_RESULT rsvlib_apiRun(UINT id)
     return rsvlibInt_mainRun(id);
 }
 
-FT_PUBILC RT_RESULT rsvlib_apiSetStaCode(RsvlibSesCb *sesCb, UINT staCode)
+FT_PUBLIC RT_RESULT rsvlib_apiSetStaCode(RsvlibSesCb *sesCb, UINT staCode)
 {
     sesCb->rsp.staCode = staCode; 
 
