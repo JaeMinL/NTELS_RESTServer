@@ -66,6 +66,7 @@ FT_PUBLIC RT_RESULT      rsvlib_apiRun               (UINT id);
 FT_PUBLIC RT_RESULT      rsvlib_apiStop              (UINT id);
 FT_PUBLIC RT_RESULT      rsvlib_apiSetRule           (UINT id, UINT mthod, CHAR *url, CHAR *query,
                                                       VOID *usrArg, RsvlibProcFunc func);
+FT_PUBILC RT_RESULT      rsvlib_apiSetStaCode        (RsvlibSesCb *sesCb, UINT staCode);
 FT_PUBLIC RT_RESULT      rsvlib_apiSetRspDat         (RsvlibSesCb *sesCb, CHAR *rspDat, BOOL cpyFlg);
 FT_PUBLIC RT_RESULT      rsvlib_apiSetRuleStrm       (UINT id, UINT mthod, CHAR *url, CHAR *query, VOID *usrArg,
                                                       RsvlibProcFunc func,
