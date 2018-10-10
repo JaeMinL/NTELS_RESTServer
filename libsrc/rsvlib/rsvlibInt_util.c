@@ -11,8 +11,6 @@
 #include "thrlib.x"
 #include "trnlib.h"
 #include "trnlib.x"
-#include "loglib.h"
-#include "loglib.x"
 #include "rrllib.h"
 #include "rrllib.x"
 
@@ -46,6 +44,7 @@ FT_PUBLIC RT_RESULT rsvlibInt_utilReadFile(CHAR *path, CHAR **rt_buf)
     }
 
     fread(buf, sizeof(CHAR), numBytes, inFile);
+
     fclose(inFile);
 
     buf[numBytes] = '\0';

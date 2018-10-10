@@ -140,6 +140,8 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
             LOG_LOG(LOG_INT_ERR,"Invalid appender type(%s)\n",dat);
             return LOGERR_APND_INVALID_TYPE;
         }
+
+        comlib_memFree(dat);
     }
 
     apndCfg = comlib_memMalloc(sizeof(LoglibIntApndCfg));
@@ -160,6 +162,7 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
         if(comlib_strCaseCmp((CHAR*)dat,"true") == 0){
             apndCfg->apndCfg.dispBit |= LOGLIB_DISP_LVL_BIT;
         }
+        comlib_memFree(dat);
     }
 
     TOML_CFG_GET_RAW_STR_PTR(apndTbl, "display_file", dat, ret);
@@ -167,6 +170,7 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
         if(comlib_strCaseCmp((CHAR*)dat,"true") == 0){
             apndCfg->apndCfg.dispBit |= LOGLIB_DISP_FILE_BIT;
         }
+        comlib_memFree(dat);
     }
 
     TOML_CFG_GET_RAW_STR_PTR(apndTbl, "display_line", dat, ret);
@@ -174,6 +178,7 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
         if(comlib_strCaseCmp((CHAR*)dat,"true") == 0){
             apndCfg->apndCfg.dispBit |= LOGLIB_DISP_LINE_BIT;
         }
+        comlib_memFree(dat);
     }
 
     TOML_CFG_GET_RAW_STR_PTR(apndTbl, "display_time", dat, ret);
@@ -181,6 +186,7 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
         if(comlib_strCaseCmp((CHAR*)dat,"true") == 0){
             apndCfg->apndCfg.dispBit |= LOGLIB_DISP_TIME_BIT;
         }
+        comlib_memFree(dat);
     }
 
     TOML_CFG_GET_RAW_STR_PTR(apndTbl, "log_level", dat, ret);
@@ -198,6 +204,7 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
         else if(logLvl == 3){
             apndCfg->apndCfg.logLvlBit |= LOGLIB_APND_DISP_DBG_LOG_BIT;
         }
+        comlib_memFree(dat);
     }
 
     switch(apndType){
@@ -217,7 +224,7 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
                     return LOGERR_MAND_APND_DATA_NOT_EXIST;
                 }
 
-                apndCfg->apndCfg.u.file.name= (CHAR*)dat;
+                apndCfg->apndCfg.u.file.name = (CHAR*)dat;
 
                 TOML_CFG_GET_RAW_NUM(apndTbl, "max_log_size", 
                         apndCfg->apndCfg.u.file.maxLogSize,
@@ -256,11 +263,18 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
                     else if(comlib_strCaseCmp((CHAR*)dat,"LOG_LOCAL7") == 0)      { fac = LOG_LOCAL7; }
                     else {
                         LOG_LOG(LOG_INT_ERR,"Invalid fac(%s)\n",dat);
+                        comlib_memFree(dat);
                         return LOGERR_INVALID_SYSLOG_FAC_TYPE;
                     }
 
+                    comlib_memFree(dat);
+
                     apndCfg->apndCfg.u.syslog.fac = fac;
                 }/* end of if(ret == RC_OK) */
+                else {
+                    LOG_LOG(LOG_INT_ERR,"facility not exist\n");
+                    return LOGERR_SYSLOG_FAC_NOT_EXIST;
+                }
             }
             break;
         case LOGLIB_APND_TYPE_STDOUT:
@@ -272,8 +286,10 @@ FT_PRIVATE RT_RESULT load_apnd(toml_table_t *apndTbl, LoglibIntApndCfg **rt_apnd
                     else if(comlib_strCaseCmp((CHAR*)dat,"stdout") == 0)        { stdType = LOG_USER; }
                     else {
                         LOG_LOG(LOG_INT_ERR,"Invalid stdout type(%s)\n", dat);
+                        comlib_memFree(dat);
                         return LOGERR_INVALID_STDOUT_TYPE;
                     }
+                    comlib_memFree(dat);
 
                     apndCfg->apndCfg.u.stdout.type = stdType;
                 }
@@ -319,7 +335,8 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
     rawDat = toml_raw_in(logTbl,"name");
     if(rawDat != NULL){
         if(toml_rtos(rawDat, &dat) != 0){
-            return RC_OK;
+            ret = RC_OK;
+            goto goto_logFree;
         }
 
         name = dat;
@@ -335,7 +352,7 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
     rawDat = toml_raw_in(logTbl,"write_thread_flag");
     if(rawDat != NULL){
         if(toml_rtos(rawDat, &dat) != 0){
-            return RC_OK;
+            goto goto_logFree;
         }
 
         ret = comlib_strCaseCmp(dat, "true"); 
@@ -345,6 +362,8 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
         else {
             cfg.wrType = LOGLIB_WR_TYPE_DIR;
         }
+
+        comlib_memFree(dat);
     }
 
     /* appender */
@@ -365,7 +384,8 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
             ret = comlib_lnkLstInsertTail(&apnderLL, &apndCfg->lnkNode);
             if(ret != RC_OK){
                 LOG_LOG(LOG_INT_ERR,"new Appender  create failed(ret=%d)\n",ret);
-                return LOGERR_APNDER_INSERT_FAILED;
+                ret = LOGERR_APNDER_INSERT_FAILED;
+                goto goto_logFree;
             }
         }/* end of for(i=0;;i++) */
     }/* end of if(apndArray != NULL) */
@@ -374,7 +394,7 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
     ret = loglib_apiInit(name, &cfg);
     if(ret != RC_OK){
         LOG_LOG(LOG_INT_ERR,"Loglib init failed(ret=%d)\n",ret);
-        return ret;
+        goto goto_logFree;
     }
 
     while(1){
@@ -388,7 +408,7 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
         ret = loglib_apiRegApnd(name, apndCfg->name, apndCfg->type, &apndCfg->apndCfg);
         if(ret != RC_OK){
             LOG_LOG(LOG_INT_ERR,"Appender regist failed(ret=%d)\n",ret);
-            return ret;
+            goto goto_logFree;
         }
 
         ret = loglibInt_loadDstryApndCfg(apndCfg);
@@ -399,7 +419,13 @@ FT_PRIVATE RT_RESULT load_log(toml_table_t *logTbl)
         comlib_memFree(apndCfg);
     }/* end of while(1) */
 
-    return RC_OK;
+    ret = RC_OK;
+goto_logFree:
+    if(name != NULL){
+        comlib_memFree(name);
+    }
+
+    return ret;
 }
 
 FT_PRIVATE RT_RESULT load_logCfg(toml_table_t *logCfg)

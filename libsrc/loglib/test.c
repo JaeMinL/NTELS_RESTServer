@@ -28,8 +28,8 @@ int main()
     cfg.dfltLogLvl = LOGLIB_LVL_NOTY;
     //cfg.wrType = LOGLIB_WR_TYPE_THRD;
 
-    //ret = loglib_apiLoadXml("./cfg_sample/log.xml", "TEST");
-    ret = loglib_apiLoadToml("./cfg_sample/log.toml", NULL);
+    ret = loglib_apiLoadXml("./cfg_sample/log.xml", NULL);
+    //ret = loglib_apiLoadToml("./cfg_sample/log.toml", NULL);
     //if(ret != RC_OK){
     //    fprintf(stderr," loglib cfg init failed(ret=%d)\n",ret);
     //    return 0;
@@ -52,20 +52,24 @@ int main()
             );
 #endif
 
-    while(1){
+    //while(1){
         LOGLIB_ERR("test2", "ERROR LOG\n");
-        LOGLIB_NOTY("test", "NOTIFY LOG\n");
-        LOGLIB_DBG("test", "DBG LOG\n");
-        LOGLIB_ERR("test_log", "LOG_ERROR LOG\n");
-        LOGLIB_NOTY("test_log", "LOG_NOTIFY LOG\n");
-        LOGLIB_DBG("test_log", "LOG_DBG LOG\n");
-        sleep(1);
-    }
+        //LOGLIB_ERR("test2", "ERROR2 LOG\n");
+        //LOGLIB_NOTY("test", "NOTIFY LOG\n");
+        //LOGLIB_DBG("test", "DBG LOG\n");
+        //LOGLIB_ERR("test_log", "LOG_ERROR LOG\n");
+        //LOGLIB_NOTY("test_log", "LOG_NOTIFY LOG\n");
+        //LOGLIB_DBG("test_log", "LOG_DBG LOG\n");
+     //   sleep(1);
+   // }
 
-    sleep(3);
+    //sleep(3);
 
     //loglib_apiDstryLoglibCb(&loglibCb);
-    loglib_apiDstry("test");
+    loglib_apiDstry("test2");
+    loglib_apiDstry(NULL);
+
+    //sleep(3);
 #if 0
     ret = loglib_apiInitLoglibCb(&loglibCb, "./","TEST", &cfg);
     if(ret != RC_OK){

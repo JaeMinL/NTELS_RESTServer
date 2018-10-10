@@ -111,6 +111,7 @@ extern "C" {
 #define LOGERR_HASH_TBL_INIT_FAILED       132
 #define LOGERR_LNK_LST_INIT_FAILED        133
 #define LOGERR_ALREADY_EXIST              134
+#define LOGERR_SYSLOG_FAC_NOT_EXIST       135
 
 #define LOGLIB_INIT_CFG(_cfg){\
     (_cfg)->dfltLogLvl = LOGLIB_LVL_ERR;\

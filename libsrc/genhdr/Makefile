@@ -1,40 +1,12 @@
-.SUFFIXEDS	: .c .o
+export SRC_TOP_DIR ?= $(shell pwd)/../..
+export MAKE_TOP_DIR ?= $(SRC_TOP_DIR)/mk
 
-#LINUX
-CC			= gcc
+INC ?= -I$(SRC_TOP_DIR)/include
 
-AR			= ar
+INSTALL_INCS +=gendef.h
+INSTALL_INCS +=smd_user.h
+INSTALL_INCS +=smd_user.x
 
-INC         = -I../../include
+INSTALL_DIR ?= $(SRC_TOP_DIR)
 
-DFLAG       = #-DGEN_CHK_ERR #-DCOMLIB_LOG
-CFLAGS		=  -g -Wall -O2 -finline-functions -m64 $(OPT) $(DFLAG) $(INC)
-
-#SRCS		= 
-
-OBJS		= $(SRCS:.c=.o)
-
-TARGET_BASE = ../..
-
-#TARGET		= libcom.a
-TARGET_DIR	= $(TARGET_BASE)/lib/
-TARGET_INC  = $(TARGET_BASE)/include/
-
-$(TARGET)	: $(OBJS)
-		$(AR) rcv $@ $(OBJS)
-
-all			: 
-	    mkdir -p $(TARGET_DIR)
-		mkdir -p $(TARGET_INC)
-		cp *.h $(TARGET_INC)
-		cp *.x $(TARGET_INC)
-
-clean		: 
-		rm -rf $(OBJS) $(TARGET) core 
-
-dep 		: 
-		makedepend -- $(CFLAGS) -- $(SRCS)
-
-new			:
-		$(MAKE) clean
-		$(MAKE)
+include $(MAKE_TOP_DIR)/lib.mk

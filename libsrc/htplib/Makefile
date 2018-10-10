@@ -1,50 +1,24 @@
-.SUFFIXEDS	: .c .o
+export SRC_TOP_DIR ?= $(shell pwd)/../..
+export MAKE_TOP_DIR ?= $(SRC_TOP_DIR)/mk
 
-#LINUX
-CC			= gcc
+INC ?= -I$(SRC_TOP_DIR)/include
 
-AR			= ar
+BUILD_DIR ?= ./build
 
-INC         = -I../../include
+#DFLAGS += -DHTPLIB_LOG
+CFLAGS +=  -g -Wall -O3 -finline-functions -m64 
 
-#DFLAG       = -DHTPLIB_LOG
-#CFLAGS		=  -g -Wall -O2 -finline-functions -m64 $(OPT) $(DFLAG) $(INC)
-#CFLAGS		=  -g -Wall -O3 -finline-functions -m64 $(OPT) $(DFLAG) $(INC)
-CFLAGS		=  -Wall -O3 -finline-functions -m64 $(OPT) $(DFLAG) $(INC)
-#CFLAGS		=  -g -Wall -finline-functions -m64 $(OPT) $(DFLAG) $(INC)
-#CFLAGS		=  -g -Wall -m64 $(DFLAG) $(INC)
+INSTALL_INCS += htplib.h
+INSTALL_INCS += htplib.x
 
 SRCS		= htplib_init.c \
 			  htplib_main.c \
 			  htplib_staCode.c \
 			  htplib_mthod.c \
 
-OBJS		= $(SRCS:.c=.o)
+INSTALL_DIR ?= $(SRC_TOP_DIR)
 
-TARGET_BASE = ../..
+OUTPUT_LIB ?= libhtp.a
 
-TARGET		= libhtp.a
-TARGET_DIR	= $(TARGET_BASE)/lib/
-TARGET_INC  = $(TARGET_BASE)/include/
+include $(MAKE_TOP_DIR)/lib.mk
 
-$(TARGET)	: $(OBJS)
-		$(AR) rcv $@ $(OBJS)
-
-all			: clean $(TARGET)
-
-install     :
-	    mkdir -p $(TARGET_DIR)
-		mkdir -p $(TARGET_INC)
-		cp $(TARGET) $(TARGET_DIR)
-		cp *.h $(TARGET_INC)
-		cp *.x $(TARGET_INC)
-
-clean		: 
-		rm -rf $(OBJS) $(TARGET) core 
-
-dep 		: 
-		makedepend -- $(CFLAGS) -- $(SRCS)
-
-new			:
-		$(MAKE) clean
-		$(MAKE)

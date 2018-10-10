@@ -31,7 +31,6 @@ FT_PRIVATE VOID thrd_clnThrd(VOID *args)
             break;
         }
         comlib_memFree(rcvDat);
-
     }/* end of while(1) */
 
     ret = loglibInt_apndDelAll(&thrdCb->apndInfo);
@@ -136,8 +135,10 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
 
     thrdCb = (LoglibIntThrdCb*)args;
 
+#if 0
     /* detach thread */
     thrlib_thrdDtch(thrdCb->tid);
+#endif
 
     /* pthread only */
     thrlib_thrdSetCnclSta(THR_THRD_CNCL_DISABLE, NULL);
@@ -157,6 +158,7 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
 
     while(1){
         thrlib_mutxLock(&thrdCb->mutx);
+        thrlib_thrdSetCnclSta(THR_THRD_CNCL_DISABLE, NULL);
 
         ret = thrlib_tqPop(&thrdCb->rcvTq, (VOID*)&rcvDat);
         if(ret == THRERR_TQ_EMPTY){
@@ -168,6 +170,7 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
                 wait.tv_sec += 1;
             }
 
+            thrlib_thrdSetCnclSta(THR_THRD_CNCL_ENABLE, NULL);
             thrlib_condTmWait(&thrdCb->cond, &thrdCb->mutx, &wait);
 
             thrlib_mutxUnlock(&thrdCb->mutx);
@@ -176,6 +179,7 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
         else if(ret != RC_OK){
             LOG_LOG(LOG_INT_ERR,"Log data pop failed(ret=%d)\n",ret);
             thrlib_mutxUnlock(&thrdCb->mutx);
+            thrlib_thrdSetCnclSta(THR_THRD_CNCL_ENABLE, NULL);
             continue;
         }
 
@@ -220,8 +224,8 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
         thrlib_mutxLock(&thrdCb->mutx);
 
         ret = loglibInt_thrdLogWrite(apndInfo, lvl, fName, fNameLen, 
-                                     line, logBuf, logBufLen, 
-                                     &msgHdr->msgTms);
+                line, logBuf, logBufLen, 
+                &msgHdr->msgTms);
         if(ret != RC_OK){
             LOG_LOG(LOG_INT_ERR,"Log write failed(ret=%d)\n",ret);
         }
@@ -229,6 +233,8 @@ FT_PUBLIC VOID loglibInt_thrdMain(VOID *args)
         thrlib_mutxUnlock(&thrdCb->mutx);
 
         comlib_memFree(rcvDat);
+
+        thrlib_thrdSetCnclSta(THR_THRD_CNCL_ENABLE, NULL);
     }/* end of while(1) */
 
     THRLIB_THRDCLNUP_POP(0);

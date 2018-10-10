@@ -383,7 +383,9 @@ FT_PUBLIC RT_RESULT loglib_apiDstry(CHAR *name)
         }
     }
     else {
-        ret = thrlib_thrdCancel(mainCb->u.thrd.thrdCb->tid);
+        thrlib_thrdCancel(mainCb->u.thrd.thrdCb->tid);
+
+        thrlib_thrdJoin(mainCb->u.thrd.thrdCb->tid, NULL);
     }
 
     thrlib_mutxUnlock(&mainCb->mutx);

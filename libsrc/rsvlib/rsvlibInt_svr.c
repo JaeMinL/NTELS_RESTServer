@@ -10,8 +10,6 @@
 #include "thrlib.x"
 #include "trnlib.h"
 #include "trnlib.x"
-#include "loglib.h"
-#include "loglib.x"
 #include "rrllib.h"
 #include "rrllib.x"
 #include "trnlib.h"

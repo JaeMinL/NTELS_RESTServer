@@ -52,6 +52,7 @@ LIBS      = \
 		$(BASE_HOME)/lib/libcom.a\
 		$(BASE_HOME)/lib/libtoml.a\
         -lxml2\
+        -lpthread\
 
 
 SRCS		= test.c \

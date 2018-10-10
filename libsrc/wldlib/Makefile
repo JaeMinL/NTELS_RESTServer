@@ -1,15 +1,14 @@
-.SUFFIXEDS	: .c .o
+export SRC_TOP_DIR ?= $(shell pwd)/../..
+export MAKE_TOP_DIR ?= $(SRC_TOP_DIR)/mk
 
-CC			= gcc
+INC ?= -I$(SRC_TOP_DIR)/include
 
-AR			= ar
+BUILD_DIR ?= ./build
 
-INC         = -I../../include
+CFLAGS +=  -g -Wall -O3 -finline-functions -m64 
 
-DFLAG       = #-DTHRLIB_LOG -DGEN_CHK_ERR
-
-CFLAGS		= -Wall -g -m64 -O2 -finline-functions $(DFLAG) $(INC)
-#CFLAGS		= -Wall -g -pg -m64 $(DFLAG) $(INC)
+INSTALL_INCS += wldlib.h
+INSTALL_INCS += wldlib.x
 
 SRCS		= wldlib_init.c \
 			  wldlib_main.c \
@@ -17,32 +16,8 @@ SRCS		= wldlib_init.c \
 			  wldlib_chr.c \
 			  wldlib_parse.c \
 
-OBJS		= $(SRCS:.c=.o)
+INSTALL_DIR ?= $(SRC_TOP_DIR)
 
-TARGET_BASE = ../..
+OUTPUT_LIB ?= libwld.a
 
-TARGET		= libwld.a
-TARGET_DIR	= $(TARGET_BASE)/lib/
-TARGET_INC  = $(TARGET_BASE)/include/
-
-$(TARGET)	: $(OBJS)
-		$(AR) rcv $@ $(OBJS)
-
-all			: clean $(TARGET)
-
-install     :
-	    mkdir -p $(TARGET_DIR)
-		mkdir -p $(TARGET_INC)
-		cp $(TARGET) $(TARGET_DIR)
-		cp *.h $(TARGET_INC)
-		cp *.x $(TARGET_INC)
-
-clean		: 
-		rm -rf $(OBJS) $(TARGET) core 
-
-dep 		: 
-		makedepend -- $(CFLAGS) -- $(SRCS)
-
-new			:
-		$(MAKE) clean
-		$(MAKE)
+include $(MAKE_TOP_DIR)/lib.mk

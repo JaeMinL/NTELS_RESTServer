@@ -9,8 +9,6 @@
 #include "thrlib.x"
 #include "trnlib.h"
 #include "trnlib.x"
-#include "loglib.h"
-#include "loglib.x"
 #include "rrllib.h"
 #include "rrllib.x"
 
@@ -22,46 +20,6 @@
 STATIC RsvlibIntGlobCb g_globCb;
 
 STATIC BOOL g_initFlg = RC_FALSE;
-
-#if 0
-FT_PUBLIC RT_RESULT rsvlibInt_globInitLoglibCb(CHAR *logName, CHAR *logPath, LoglibCfg *cfg)
-{
-    LoglibCfg logCfg;
-    SINT ret = RC_OK;
-
-    LOGLIB_GLOB_INIT();
-
-    if(logPath != NULL){
-        ret = loglib_apiLoadCfg(&g_globCb.loglibCb, logPath, logName);
-    }
-    else {
-        LOGLIB_INIT_CFG(&logCfg);
-
-        logCfg.dfltLogLvl = LOGLIB_LVL_ERR;
-
-        ret = loglib_apiInitLoglibCb(&g_globCb.loglibCb, &logCfg);
-    }
-    if(ret != RC_OK){
-        RSV_LOG(RSV_ERR,"Loglib init failed(ret=%d)\n",ret);
-        return RC_NOK;
-    }
-
-    g_globCb.loglibInitFlg = RC_TRUE;
-    return RC_OK;
-}
-#endif
-
-#if 0
-FT_PUBLIC LoglibCb* rsvlibInt_globGetLoglibCb()
-{
-    if(g_globCb.loglibInitFlg == RC_TRUE){
-        return &g_globCb.loglibCb;
-    }
-    else {
-        return NULL;
-    }
-}
-#endif
 
 FT_PUBLIC RT_RESULT rsvlibInt_globSetRsvlibIntCb(UINT id, RsvlibIntCb *rsvlibIntCb)
 {
@@ -92,21 +50,11 @@ FT_PUBLIC RsvlibIntCb* rsvlibInt_globGetRsvlibIntCb(UINT id)
 
 FT_PUBLIC RT_RESULT rsvlibInt_globInit()
 {
-#if 0
-    SINT ret = RC_OK;
-#endif
     UINT i = 0;
-#if 0
-    LoglibCfg logCfg;
-#endif
 
     if(g_initFlg == RC_TRUE){
         return RC_OK;
     }
-
-#if 0 
-    g_globCb.loglibInitFlg = RC_FALSE;
-#endif
 
     for(i=0;i<RSV_MAX_SVR_CNT;i++){
         g_globCb.rsvlibCb[i] = NULL;
@@ -117,26 +65,12 @@ FT_PUBLIC RT_RESULT rsvlibInt_globInit()
     /* init rsvlibInt rule library */
     rrllib_globInit();
 
-#if 0
-    rrllib_globSetLogFunc(RRL_ERR, rsvlibInt_mainLogPrnt);
-    rrllib_globSetDispFunc(rsvlibInt_mainDispPrnt);
-#endif
-
     /* set log */
     thrlib_mutxInit(&g_globCb.mutx);
 
     g_globCb.logLvl = RSV_NONE;
     g_globCb.logBufLen = 0;
     g_globCb.logFunc = NULL;
-#if 0
-    LOGLIB_INIT_CFG(&logCfg);
-
-    ret = rsvlibInt_globInitLoglibCb("RSV", NULL, &logCfg);
-    if(ret != RC_OK){
-        RSV_LOG(RSV_ERR,"Log init failed(ret=%d)\n",ret);
-        return RC_NOK;
-    }
-#endif
 
     g_initFlg = RC_TRUE;
 

@@ -86,7 +86,9 @@ struct RsvlibIntGlobCb{
 };
 
 /* rsvlibInt_glob.c */
+#if 0
 FT_PUBLIC LoglibCb*     rsvlibInt_globGetLoglibCb          ();
+#endif
 FT_PUBLIC RT_RESULT     rsvlibInt_globSetRsvlibIntCb       (UINT id, RsvlibIntCb *rsvlibCb);
 FT_PUBLIC RsvlibIntCb*  rsvlibInt_globGetRsvlibIntCb       (UINT id);
 FT_PUBLIC RT_RESULT     rsvlibInt_globGetLogLvl            ();

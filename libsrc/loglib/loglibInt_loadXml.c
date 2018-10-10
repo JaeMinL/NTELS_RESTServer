@@ -427,7 +427,7 @@ FT_PUBLIC RT_RESULT loglibInt_loadXml(CONST CHAR *cfgFile, CONST CHAR *cfgName)
         if(ret == 0){
             /* find name */
             attr = xmlHasProp(node,(CONST xmlChar*)"name");
-            if(attr != NULL){
+            if((attr != NULL) && (cfgName != NULL)){
                 xmlChar *val = NULL;
 
                 val = xmlNodeGetContent(attr->children);
@@ -439,8 +439,8 @@ FT_PUBLIC RT_RESULT loglibInt_loadXml(CONST CHAR *cfgFile, CONST CHAR *cfgName)
                 }
                 xmlFree(val);
             }/* end of if(attr != NULL) */
-            else {
-                if(cfgName != NULL){
+            else if(attr != NULL){
+                if(cfgName == NULL){
                     continue;
                 }
             }

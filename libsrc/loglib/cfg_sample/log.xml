@@ -1,8 +1,9 @@
 <!-- DEFAULT APPDNER 
      STDOUT - STDERR
 -->
-<LOG_CFG name="TESt">
-    <LOG name="test_log">
+<!--LOG_CFG name="TESt"-->
+<LOG_CFG>
+    <LOG name="test2">
         <LOG_LEVEL>2</LOG_LEVEL>
         <WR_THRD_FLAG>true</WR_THRD_FLAG>
         <APPENDER type="file" >

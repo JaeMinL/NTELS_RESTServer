@@ -4,21 +4,21 @@
 #
 #SHELL  			= /bin/sh
 
-MAKE   			= gmake
+MAKE   			= make
 RM              = rm -rf
 
 SOURCES			= genhdr\
-				  comlib\
-				  thrlib\
-				  trnlib\
-				  rlylib\
-				  rrllib\
-				  loglib\
-				  htplib\
-				  smulib\
-				  wldlib\
-				  rsvlib\
-				  rcllib\
+   				  comlib\
+   				  thrlib\
+   				  trnlib\
+   				  rlylib\
+   				  rrllib\
+   				  loglib\
+   				  htplib\
+   				  smulib\
+   				  wldlib\
+   				  rsvlib\
+   				  rcllib\
 
 all::
 	       	@for i in $(SOURCES) ; \

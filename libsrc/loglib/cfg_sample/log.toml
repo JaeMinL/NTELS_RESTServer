@@ -24,7 +24,7 @@
       display_file = "false"
       display_line = "true"
       display_time = "true"
-      facility = LOG_LOCAL0
+      facility = "LOG_LOCAL0"
 
     [[LOG_CFG.LOG.APPENDER]]
       type = "stdout"
