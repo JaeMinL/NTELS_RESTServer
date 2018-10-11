@@ -29,7 +29,7 @@
 #define QUERY_LEN 1024
 #define TABLE_LEN 32
 #define CMP_LEN 1
-#define DATE_LEN 19
+#define DATE_LEN 20
 #define HTTP_BAD_REQUEST 404
 
 FT_PUBLIC RT_RESULT Host_1min(UINT mthod, RsvlibSesCb *sesCb);
@@ -72,6 +72,7 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who)
 	json_object *who_obj = NULL;
 	json_object *data_obj = NULL;
 	json_object *array_obj = NULL;
+	json_object *str_val = NULL;	
 
 	if(who == NULL || query == NULL || sesCb == NULL)
 	{
@@ -136,8 +137,6 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who)
 		return RC_NOK;
 	}
 
-	//printf("row 갯수 : %d\n",row_cnt);	
-	//printf("field  갯수 : %d\n",field_cnt);
 	while((row = mysql_fetch_row(res)) != NULL)
 	{
 		data_obj = json_object_new_object();
@@ -150,7 +149,15 @@ FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CHAR *who)
 		}
 		for(i=0; i<field_cnt; i++)
 		{	
-			json_object_object_add(data_obj, fields[i].name, json_object_new_string(row[i]));
+			if(row[i] == NULL)
+			{
+				str_val = json_object_new_string("NULL");
+			}
+			else
+			{
+				str_val = json_object_new_string(row[i]);
+			}
+			json_object_object_add(data_obj, fields[i].name, str_val);
 		}
 		json_object_array_add(array_obj, data_obj);
 	}

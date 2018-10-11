@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <json/json.h>
 #include <string.h>
+#include <time.h>
 
 #include "gendef.h"
 #include "comlib.h"
@@ -20,27 +21,42 @@
 #include "rsvlib.x"
 #include "rest_stat.h"
 
-#define DATE_LEN 19
-#define DATE_SCHEME_CHARS "1234567890"
+#define DATE_LEN 20 
 
 FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR *date_store){
-	CHAR date_new[DATE_LEN];
-	UINT year_len = 4;
-	UINT other_len = 2;
-	UINT count = 0;
-        UINT stack = 0;
 	UINT i = 0;
-	date_new[0] = '\0';
+	struct tm  result = {0};
 
 	if(date_old == NULL){
 		return RC_NOK;
 	}	
 	
-	if(comlib_strGetLen(date_old) != DATE_LEN)
+	if(comlib_strGetLen(date_old) != DATE_LEN-1 || !isdigit(date_old[DATE_LEN-2]))
 	{
-		fprintf(stderr, "date type is not correct\n");
+		LOGLIB_ERR("REST", "date type is not correct\n");
 		return RC_NOK;
 	}
+
+	if(strptime(date_old, "%Y-%m-%d_%H:%M:%S", &result) == NULL)
+	{
+		LOGLIB_ERR("REST", "date type is not correct\n");
+		return RC_NOK;
+	}
+	//printf("%d %d %d: %d %d %d", result.tm_year+1900, result.tm_mon+1, result.tm_mday, result.tm_hour, result.tm_min, result.tm_sec);
+	i = snprintf((CHAR *)date_store, DATE_LEN+1, "%d-%d-%d %d:%d:%d", result.tm_year+1900, result.tm_mon+1, result.tm_mday, result.tm_hour, result.tm_min, result.tm_sec);
+	if(i == 0 || i >= DATE_LEN+1)
+	{
+		LOGLIB_ERR("REST", "date format change failed\n");
+		return RC_NOK;
+	}
+
+/*
+	UINT count = 0;
+	UINT stack = 0;
+	UINT year_len = 4;
+	UINT other_len = 2;
+	CHAR date_new[DATE_LEN];
+	date_new[0] = '\0';
 
 	count = comlib_strSpn(date_old, DATE_SCHEME_CHARS);
 	if(count != year_len || date_old[count] != '-')
@@ -139,7 +155,8 @@ FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR *date_store){
 		LOGLIB_ERR("REST", "snprintf() append second error\n");
 		return RC_NOK;
 	}	
-
+	
 	snprintf((CHAR *)date_store, DATE_LEN+1, "%s", date_new);
+	*/
 	return RC_OK;
 }
