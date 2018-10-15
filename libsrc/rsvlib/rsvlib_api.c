@@ -39,7 +39,7 @@ FT_PRIVATE RT_RESULT api_findHdr(RsvlibSesCb *sesCb,
             httpHdr = lnkNode->data;
 
             if(httpHdr->keyLen == keyLen){
-                if(caseFlg == RC_TRUE){
+		if(caseFlg == RC_TRUE){
                     ret = comlib_strCaseNCmp(httpHdr->key, key, keyLen);
                 }
                 else{

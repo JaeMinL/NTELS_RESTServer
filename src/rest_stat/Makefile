@@ -41,7 +41,7 @@ LIBS      = \
 		$(BASE_HOME)/lib/libtoml.a\
 
 
-SRCS		= main.c change_date.c
+SRCS		= main.c changeDate.c dbConn.c makeQuery.c
 
 OBJS			= $(SRCS:.c=.o)
 
