@@ -1,0 +1,18 @@
+[NOTY][10:34:34] [main.c:104] REST INTERFACE START
+[ERR ][10:34:41] [authUser.c:50]  'Content-Type' header not found error(ret=0)
+[ERR ][10:34:41] [main.c:198] findUrl() error(ret=0)
+[NOTY][10:37:07] [main.c:104] REST INTERFACE START
+[ERR ][10:37:09] [authUser.c:50]  'Content-Type' header not found error(ret=0)
+[ERR ][10:37:09] [main.c:198] findUrl() error(ret=0)
+[NOTY][10:37:55] [main.c:104] REST INTERFACE START
+[ERR ][10:37:57] [authUser.c:50]  'Content-Type' header not found error(ret=0)
+[ERR ][10:37:57] [main.c:198] findUrl() error(ret=0)
+[NOTY][10:54:49] [main.c:104] REST INTERFACE START
+[NOTY][10:55:33] [main.c:104] REST INTERFACE START
+[NOTY][10:56:04] [main.c:104] REST INTERFACE START
+[NOTY][10:56:35] [main.c:104] REST INTERFACE START
+[NOTY][10:57:15] [main.c:104] REST INTERFACE START
+[NOTY][10:58:12] [main.c:104] REST INTERFACE START
+[NOTY][10:58:15] [main.c:104] REST INTERFACE START
+[NOTY][10:58:39] [main.c:104] REST INTERFACE START
+[NOTY][10:59:19] [main.c:104] REST INTERFACE START

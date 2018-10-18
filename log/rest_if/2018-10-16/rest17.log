@@ -1,0 +1,25 @@
+[NOTY][17:01:42] [main.c:104] REST INTERFACE START
+[NOTY][17:01:44] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_5MIN a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][17:15:37] [main.c:104] REST INTERFACE START
+[ERR ][17:15:38] [authUser.c:190] Auth response(ret=0)
+[ERR ][17:15:38] [main.c:198] findUrl() error(ret=0)
+[NOTY][17:16:18] [main.c:104] REST INTERFACE START
+[ERR ][17:16:19] [authUser.c:191] Auth response(ret=0)
+[ERR ][17:16:19] [main.c:198] findUrl() error(ret=0)
+[NOTY][17:17:21] [main.c:104] REST INTERFACE START
+[NOTY][17:17:23] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_5MIN a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][17:18:54] [main.c:104] REST INTERFACE START
+[NOTY][17:18:57] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_5MIN a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[ERR ][17:19:05] [authUser.c:185] Auth response status : HTTP/1.1 401 Unau
+[ERR ][17:19:05] [main.c:198] findUrl() error(ret=0)
+[NOTY][17:20:54] [main.c:104] REST INTERFACE START
+[ERR ][17:20:59] [authUser.c:185] Auth response status : HTTP/1.1 401 Unau
+[ERR ][17:20:59] [main.c:198] findUrl() error(ret=0)
+[NOTY][17:21:51] [main.c:104] REST INTERFACE START
+[ERR ][17:21:53] [authUser.c:185] Auth response status : H
+[ERR ][17:21:53] [main.c:198] findUrl() error(ret=0)
+[NOTY][17:23:35] [main.c:104] REST INTERFACE START
+[ERR ][17:23:37] [authUser.c:185] OAuth server response: HTTP/1.1 401 Unauthorized
+
+[ERR ][17:23:37] [main.c:198] findUrl() error(ret=0)
+[NOTY][17:23:54] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_5MIN a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10

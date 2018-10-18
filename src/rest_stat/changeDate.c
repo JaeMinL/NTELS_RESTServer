@@ -1,10 +1,10 @@
-#include <unistd.h>
+#define __USE_XOPEN
+#define _GNU_SOURCE
+
 #include <stdio.h>
-#include <mysql/mysql.h>
-#include <stdlib.h>
-#include <json/json.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 #include "gendef.h"
 #include "comlib.h"

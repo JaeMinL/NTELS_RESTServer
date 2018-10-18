@@ -1,0 +1,105 @@
+[NOTY][14:00:27] [main.c:107] REST INTERFACE START
+[NOTY][14:00:29] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:00:29] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:03:47] [main.c:107] REST INTERFACE START
+[NOTY][14:03:48] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:03:48] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:10:07] [main.c:107] REST INTERFACE START
+[NOTY][14:10:09] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:10:09] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:11:11] [main.c:107] REST INTERFACE START
+[NOTY][14:11:13] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:11:13] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:11:36] [main.c:107] REST INTERFACE START
+[NOTY][14:11:38] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:11:38] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:16:58] [main.c:107] REST INTERFACE START
+[NOTY][14:16:59] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:16:59] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:17:37] [main.c:107] REST INTERFACE START
+[NOTY][14:17:40] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:17:40] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:18:59] [main.c:107] REST INTERFACE START
+[NOTY][14:19:01] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:19:01] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:19:36] [main.c:107] REST INTERFACE START
+[NOTY][14:19:38] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:19:38] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:20:08] [main.c:107] REST INTERFACE START
+[NOTY][14:20:10] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:20:10] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:20:12] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:20:12] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:30:04] [main.c:107] REST INTERFACE START
+[NOTY][14:30:05] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:30:05] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:30:10] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:30:10] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:33:16] [main.c:107] REST INTERFACE START
+[NOTY][14:33:19] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:33:19] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:33:48] [main.c:107] REST INTERFACE START
+[NOTY][14:33:50] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:33:50] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:34:02] [authMng.c:91] Access Token exit in Token Cache
+[NOTY][14:34:02] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:35:16] [main.c:107] REST INTERFACE START
+[NOTY][14:35:18] [authMng.c:96] Access Token is inserted in Token Cache
+[NOTY][14:35:18] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:35:48] [authMng.c:91] Access Token exit in Token Cache
+[NOTY][14:35:48] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:37:10] [main.c:107] REST INTERFACE START
+[NOTY][14:37:13] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:37:13] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:37:13] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:37:16] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:37:16] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:37:16] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:39:02] [main.c:107] REST INTERFACE START
+[NOTY][14:39:10] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:39:10] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:39:10] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:40:30] [main.c:107] REST INTERFACE START
+[NOTY][14:40:49] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:40:49] [authMng.c:127] OAuth server response: HTTP/1.1 401 Unauthorized
+
+[ERR ][14:40:49] [main.c:154] findUrl() error(ret=0)
+[NOTY][14:41:08] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:41:08] [authMng.c:127] OAuth server response: HTTP/1.1 401 Unauthorized
+
+[ERR ][14:41:08] [main.c:154] findUrl() error(ret=0)
+[NOTY][14:44:33] [main.c:107] REST INTERFACE START
+[NOTY][14:44:35] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:44:35] [authMng.c:127] OAuth server response: HTTP/1.1 401 Unauthorized
+
+[ERR ][14:44:35] [main.c:154] findUrl() error(ret=0)
+[NOTY][14:44:39] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:44:39] [authMng.c:127] OAuth server response: HTTP/1.1 401 Unauthorized
+
+[ERR ][14:44:39] [main.c:154] findUrl() error(ret=0)
+[NOTY][14:45:20] [main.c:107] REST INTERFACE START
+[NOTY][14:45:21] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:45:21] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:45:21] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:45:25] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:45:25] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:45:25] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:46:00] [main.c:107] REST INTERFACE START
+[NOTY][14:46:01] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:46:01] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:46:01] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:46:30] [main.c:107] REST INTERFACE START
+[NOTY][14:46:31] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:46:31] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:46:31] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:51:26] [main.c:107] REST INTERFACE START
+[NOTY][14:51:28] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:51:28] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:51:28] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:51:31] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:51:31] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:51:31] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10
+[NOTY][14:52:05] [main.c:107] REST INTERFACE START
+[NOTY][14:52:07] [authMng.c:96] Access Token is inserted in Token Cache
+[ERR ][14:52:07] [tokenCache.c:73] TOKEN HASH NODE INSERT FAILED error(ret=206)
+[NOTY][14:52:07] [dbConn.c:45] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test2' LIMIT 10

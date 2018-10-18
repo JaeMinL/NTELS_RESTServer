@@ -1,0 +1,43 @@
+[NOTY][12:31:17] [main.c:402] REST INTERFACE START
+[ERR ][12:31:33] [main.c:280] Find svr or host value failed(ret=1)
+[NOTY][12:33:01] [main.c:403] REST INTERFACE START
+[ERR ][12:33:03] [main.c:280] Find svr or host value failed(ret=1)
+[NOTY][12:34:09] [main.c:403] REST INTERFACE START
+[ERR ][12:34:10] [main.c:280] Find svr or host argument failed(ret=1)
+[NOTY][12:34:48] [main.c:402] REST INTERFACE START
+[ERR ][12:34:51] [main.c:294] Find static term argument failed(ret=1)
+[NOTY][12:36:31] [main.c:402] REST INTERFACE START
+[ERR ][12:36:32] [main.c:294] Find static term argument failed(ret=1)
+[NOTY][12:37:06] [main.c:403] REST INTERFACE START
+[ERR ][12:37:09] [main.c:295] Find static term argument failed(ret=1)
+[NOTY][12:40:10] [main.c:424] REST INTERFACE START
+[NOTY][12:40:44] [main.c:424] REST INTERFACE START
+[NOTY][12:43:57] [main.c:426] REST INTERFACE START
+[NOTY][12:44:35] [main.c:425] REST INTERFACE START
+[ERR ][12:44:37] [makeQuery.c:47] MakeQueryByInfo assertion failed
+[ERR ][12:44:37] [main.c:336] funcInfo() error(ret=0)
+[NOTY][12:45:41] [main.c:426] REST INTERFACE START
+[ERR ][12:45:42] [makeQuery.c:47] MakeQueryByInfo assertion failed
+[ERR ][12:45:42] [main.c:337] funcInfo() error(ret=0)
+[NOTY][12:46:29] [main.c:426] REST INTERFACE START
+[NOTY][12:46:30] [dbConn.c:46] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test'
+[NOTY][12:47:07] [main.c:426] REST INTERFACE START
+[NOTY][12:47:13] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_DAY a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:47:20] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_HOUR a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:47:54] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_HOUR a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:48:10] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_DAY a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:49:21] [main.c:426] REST INTERFACE START
+[NOTY][12:49:23] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_DAY a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:49:29] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_DAY a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:50:10] [main.c:426] REST INTERFACE START
+[NOTY][12:50:14] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST_DAY a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:51:13] [main.c:426] REST INTERFACE START
+[ERR ][12:51:15] [makeQuery.c:47] MakeQueryByInfo assertion failed
+[ERR ][12:51:15] [main.c:337] funcInfo() error(ret=0)
+[NOTY][12:52:13] [main.c:426] REST INTERFACE START
+[NOTY][12:52:15] [dbConn.c:46] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_HOUR a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test'
+[NOTY][12:52:29] [dbConn.c:46] SELECT b.SERVICE_NAME, a.* FROM TSD_STAT_SERVICE_DAY a, TSD_SVC b WHERE a.SERVICE_ID = b.SERVICE_ID AND b.SERVICE_NAME = 'test'
+[NOTY][12:52:42] [dbConn.c:46] SELECT b.HOST_NAME, a.* FROM TSD_STAT_HOST a, TSD_HOST b WHERE a.HOST_ID = b.HOST_ID AND b.HOST_NAME = 'test'
+[NOTY][12:54:03] [main.c:426] REST INTERFACE START
+[ERR ][12:54:18] [makeQuery.c:65] Service has no IP 
+[ERR ][12:54:18] [main.c:337] funcInfo() error(ret=0)
