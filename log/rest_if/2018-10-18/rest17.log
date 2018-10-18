@@ -1,0 +1,5 @@
+[NOTY][17:08:28] [main.c:107] REST INTERFACE START
+[NOTY][17:08:31] [authMng.c:96] Authentication Request to Auth Server
+[ERR ][17:08:31] [authMng.c:127] OAuth server response: HTTP/1.1 401 Unauthorized
+
+[ERR ][17:08:31] [main.c:154] findUrl() error(ret=0)

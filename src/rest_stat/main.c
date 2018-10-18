@@ -19,6 +19,9 @@
 #include "rest_stat.h"
 
 #define HTTP_BAD_REQUEST 404
+#define UNAUTHORIZED 401
+
+AuthMngCb authMngCb;
 
 FT_PUBLIC RT_RESULT findUrl(RsvlibSesCb *sesCb, CHAR **who, CHAR **when);
 FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb);
@@ -28,6 +31,7 @@ int main(int argc, char **argv)
 {
 	SINT ret = RC_OK;
 	SINT opt = 0;
+
 #if 0
     CHAR cfgPath[MAIN_CFG_PATH_LEN];
 #endif
@@ -113,6 +117,13 @@ int main(int argc, char **argv)
 
 	rsvlib_apiSetLogFunc(RSV_DBG, logPrnt);
 
+	ret = initAuthMngCb(&authMngCb);
+	if(ret != RC_OK)
+	{
+		LOGLIB_ERR("REST","init failed(ret=%d)\n", ret);
+		return RC_NOK;
+	}
+
 	/* url rule setting */
 	ret = rsvlib_apiSetRule(1, RSV_MTHOD_GET, "/{who}/{when}", "[name] [ip] [start] [end]", NULL, func);
 
@@ -122,11 +133,46 @@ int main(int argc, char **argv)
 	while(1){
 	    sleep(1);
 	}
+
 	//exit(1);
 	//rsvlib_apiDstry(1);
 	//loglib_apiDstryLoglibCb(&loglibCb);	
 
 	return 0;
+}
+
+
+FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb)
+{
+	CHAR *who = NULL;
+	CHAR *when = NULL;
+	SINT ret = RC_NOK;
+	
+	ret = userAuth(sesCb, &authMngCb);
+	if(ret != RC_OK)
+	{
+		LOGLIB_ERR("REST","findUrl() error(ret=%d)\n", ret);
+		rsvlib_apiSetStaCode(sesCb, UNAUTHORIZED);
+		return RC_NOK;
+	}
+	printf("userAuth success!!!!!!!!!!!!!!\n");
+	ret = findUrl(sesCb, &who, &when);
+	if(ret != RC_OK)
+	{
+		LOGLIB_ERR("REST","findUrl() error(ret=%d)\n", ret);
+		rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
+		return RC_NOK;
+	}
+
+	ret = MakeQuery(sesCb, who, when);
+	if(ret != RC_OK)
+	{
+		LOGLIB_ERR("REST","funcInfo() error(ret=%d)\n", ret);
+		rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
+		return RC_NOK;
+	}
+
+	return RC_OK;
 }
 
 FT_PUBLIC RT_RESULT findUrl(RsvlibSesCb *sesCb, CHAR **who, CHAR **when)
@@ -182,29 +228,6 @@ FT_PUBLIC RT_RESULT findUrl(RsvlibSesCb *sesCb, CHAR **who, CHAR **when)
 	{
 		(*when) = NULL;
 	}
-	return RC_OK;
-}
-
-FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb)
-{
-	CHAR *who = NULL;
-	CHAR *when = NULL;
-	SINT ret = RC_NOK;
-
-	ret = findUrl(sesCb, &who, &when);
-	if(ret != RC_OK)
-	{
-		LOGLIB_ERR("REST","findUrl() error(ret=%d)\n", ret);
-		rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
-	}
-
-	ret = MakeQuery(sesCb, who, when);
-	if(ret != RC_OK)
-	{
-		LOGLIB_ERR("REST","funcInfo() error(ret=%d)\n", ret);
-		rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
-	}
-
 	return RC_OK;
 }
 

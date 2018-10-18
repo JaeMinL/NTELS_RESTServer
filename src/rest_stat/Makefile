@@ -23,17 +23,16 @@ SYS_FIXED_FLAG  = AUTO
 
 ENV = -Wall  -DLOGLIB_DISP_ENV_LVL -DLOGLIB_DISP_ENV_FILE -DLOGLIB_DISP_ENV_LINE -DLOGLIB_DISP_ENV_TIME
 
-COPTS     = -g  -lpthread -luriparser -lxml2 -lmicrohttpd -lmysqlclient -ljson -ljson-c
+COPTS     = -g  -lpthread -luriparser -lxml2 -lmicrohttpd -lmysqlclient -ljson -ljson-c -lcurl
 #IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib64/mysql
 #IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib/ -L/usr/lib64 -L/usr/lib/mysql
-IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib/ -L/usr/lib64/mysql -L/usr/lib/mysql -L/usr/include/json -L/usr/include/json-c
+IOPTS     = -I$(INC_DIR) -I/usr/include/libxml2 -L/usr/lib/ -L/usr/lib64/mysql -L/usr/lib/mysql -L/usr/include/json -L/usr/include/json-c -L/usr/include/curl
 
 POPTS     = $(DEBUG) $(DEBUG_TRC)
 
 LIBS      = \
 		$(BASE_HOME)/lib/librsv.a\
 		$(BASE_HOME)/lib/librrl.a\
-		$(BASE_HOME)/lib/librly.a\
 		$(BASE_HOME)/lib/libtrn.a\
 		$(BASE_HOME)/lib/liblog.a\
 		$(BASE_HOME)/lib/libthr.a\
@@ -41,7 +40,7 @@ LIBS      = \
 		$(BASE_HOME)/lib/libtoml.a\
 
 
-SRCS		= main.c changeDate.c dbConn.c makeQuery.c
+SRCS		= main.c changeDate.c dbConn.c makeQuery.c authMng.c authlib_init.c tokenCache.c
 
 OBJS			= $(SRCS:.c=.o)
 
