@@ -13,6 +13,7 @@ int main()
     SINT ret = RC_OK;
     RcllibCb rcllibCb;
     UINT rspDatLen = 0;
+    UINT staCode = 0;
     CHAR *rspDat = NULL;
 
     ret = rcllib_apiGlobInit();
@@ -41,6 +42,10 @@ int main()
 
     printf("== response data ==\n");
     printf("%.*s\n",rspDatLen, rspDat);
+
+    rcllib_apiGetStaCode(&rcllibCb, &staCode);
+
+    printf("status code = %d\n", staCode);
 
     comlib_memFree(rspDat);
 
