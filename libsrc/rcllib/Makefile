@@ -3,6 +3,8 @@ export MAKE_TOP_DIR ?= $(SRC_TOP_DIR)/mk
 
 INC ?= -I$(SRC_TOP_DIR)/include
 
+BUILD_DIR ?= ./build
+
 CFLAGS +=  -g -Wall -O3 -finline-functions -m64
 
 INSTALL_INCS += rcllib.h
