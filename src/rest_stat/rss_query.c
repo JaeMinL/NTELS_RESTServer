@@ -24,7 +24,7 @@
 #define DATE_LEN 20
 #define HTTP_BAD_REQUEST 404
 
-FT_PUBLIC RT_RESULT MakeQuery(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
+FT_PUBLIC RT_RESULT rss_queryMake(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
 {
     RrllibDocArg *docArg = NULL;
     UINT strSttLen = 0;
@@ -105,7 +105,7 @@ FT_PUBLIC RT_RESULT MakeQuery(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
 			rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
 			return RC_NOK; 
 		}
-		ret = ChDate(strStt, strStt_new);
+		ret = rss_dateChange(strStt, strStt_new);
 		if(ret != RC_OK)
 		{
 			LOGLIB_ERR("REST", "change 'start' date type is failed %s(ret=%d)\n",strStt, ret);
@@ -131,7 +131,7 @@ FT_PUBLIC RT_RESULT MakeQuery(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
 			rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
 			return RC_NOK; 
 		}
-		ret = ChDate(strEnd, strEnd_new);
+		ret = rss_dateChange(strEnd, strEnd_new);
 		if(ret != RC_OK)
 		{
 			LOGLIB_ERR("REST", "change 'end' date type is failed %s (ret=%d)\n", strEnd, ret);
@@ -201,10 +201,10 @@ FT_PUBLIC RT_RESULT MakeQuery(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
     }
 
 
-    ret = DbResult(query, sesCb, who);
+    ret = rss_connDBGetResult(query, sesCb, who);
     if(ret != RC_OK)
     {
-        LOGLIB_ERR("REST", "DbResult() error(ret=%d)\n", ret);
+        LOGLIB_ERR("REST", "rss_connDBGetResult() error(ret=%d)\n", ret);
         rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
         return RC_NOK;
     }

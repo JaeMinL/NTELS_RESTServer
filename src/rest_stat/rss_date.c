@@ -23,7 +23,7 @@
 
 #define DATE_LEN 20 
 
-FT_PUBLIC RT_RESULT ChDate(CONST CHAR *date_old, CHAR *date_store){
+FT_PUBLIC RT_RESULT rss_dateChange(CONST CHAR *date_old, CHAR *date_store){
 	UINT i = 0;
 	struct tm  result = {0};
 

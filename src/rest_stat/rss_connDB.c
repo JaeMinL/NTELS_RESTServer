@@ -22,7 +22,7 @@
 #define DB_NAME "SDV"
 #define HTTP_BAD_REQUEST 404
 
-FT_PUBLIC RT_RESULT DbResult(CHAR * query, RsvlibSesCb *sesCb, CONST CHAR *who)
+FT_PUBLIC RT_RESULT rss_connDBGetResult(CHAR * query, RsvlibSesCb *sesCb, CONST CHAR *who)
 {
 	MYSQL *conn = NULL;
 	MYSQL_RES *res = NULL;

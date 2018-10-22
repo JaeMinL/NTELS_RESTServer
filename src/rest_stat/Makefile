@@ -40,7 +40,7 @@ LIBS      = \
 		$(BASE_HOME)/lib/libtoml.a\
 
 
-SRCS		= main.c changeDate.c dbConn.c makeQuery.c authMng.c authlib_init.c tokenCache.c
+SRCS		= main.c rss_auth.c rss_connDB.c rss_date.c rss_query.c rss_token.c
 
 OBJS			= $(SRCS:.c=.o)
 

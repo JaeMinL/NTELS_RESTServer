@@ -21,7 +21,7 @@
 #define HTTP_BAD_REQUEST 404
 #define UNAUTHORIZED 401
 
-AuthMngCb authMngCb;
+STATIC AuthMngCb authMngCb;
 
 FT_PUBLIC RT_RESULT findUrl(RsvlibSesCb *sesCb, CHAR **who, CHAR **when);
 FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb);
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 
 	rsvlib_apiSetLogFunc(RSV_DBG, logPrnt);
 
-	ret = initAuthMngCb(&authMngCb);
+	ret = rss_authInit(&authMngCb);
 	if(ret != RC_OK)
 	{
 		LOGLIB_ERR("REST","init failed(ret=%d)\n", ret);
@@ -131,9 +131,17 @@ int main(int argc, char **argv)
 	rsvlib_apiRun(1);
 
 	while(1){
+		EXEC_TMR_TICK(&authMngCb.main.tmr);
+		comlib_timerTblHandler(&authMngCb.main.tokenTmrTbl);
 	    sleep(1);
 	}
 
+	ret = rss_authDstry(&authMngCb);
+	if(ret != RC_OK)
+	{
+		LOGLIB_ERR("REST","destroy failed(ret=%d)\n", ret);
+		return RC_NOK;
+	}
 	//exit(1);
 	//rsvlib_apiDstry(1);
 	//loglib_apiDstryLoglibCb(&loglibCb);	
@@ -147,15 +155,15 @@ FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb)
 	CHAR *who = NULL;
 	CHAR *when = NULL;
 	SINT ret = RC_NOK;
-	
-	ret = userAuth(sesCb, &authMngCb);
+
+	ret = rss_authSvr(sesCb, &authMngCb);
 	if(ret != RC_OK)
 	{
 		LOGLIB_ERR("REST","findUrl() error(ret=%d)\n", ret);
 		rsvlib_apiSetStaCode(sesCb, UNAUTHORIZED);
 		return RC_NOK;
 	}
-	printf("userAuth success!!!!!!!!!!!!!!\n");
+	
 	ret = findUrl(sesCb, &who, &when);
 	if(ret != RC_OK)
 	{
@@ -164,7 +172,7 @@ FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb)
 		return RC_NOK;
 	}
 
-	ret = MakeQuery(sesCb, who, when);
+	ret = rss_queryMake(sesCb, who, when);
 	if(ret != RC_OK)
 	{
 		LOGLIB_ERR("REST","funcInfo() error(ret=%d)\n", ret);
@@ -174,6 +182,7 @@ FT_PUBLIC RT_RESULT func(UINT mthod, RsvlibSesCb *sesCb)
 
 	return RC_OK;
 }
+
 
 FT_PUBLIC RT_RESULT findUrl(RsvlibSesCb *sesCb, CHAR **who, CHAR **when)
 {/*find url who(svc/host) and when(1min/5min/hour/day)*/
