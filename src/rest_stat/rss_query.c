@@ -23,6 +23,7 @@
 #define CMP_LEN 1
 #define DATE_LEN 20
 #define HTTP_BAD_REQUEST 404
+#define RESULT_LIMIT 10
 
 FT_PUBLIC RT_RESULT rss_queryMake(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
 {
@@ -192,10 +193,10 @@ FT_PUBLIC RT_RESULT rss_queryMake(RsvlibSesCb *sesCb, CHAR *who, CHAR *term)
         }
     }
 
-    i += snprintf(query+i, QUERY_LEN-i, "LIMIT 10");
+    i += snprintf(query+i, QUERY_LEN-i, "LIMIT %d", RESULT_LIMIT);
     if(i<0 || i>= QUERY_LEN)
     {
-        LOGLIB_ERR("REST", "snprintf() make DB Query add 'LIMIT 10' error\n");
+        LOGLIB_ERR("REST", "snprintf() make DB Query add 'LIMIT %d' error\n", RESULT_LIMIT);
         rsvlib_apiSetStaCode(sesCb, HTTP_BAD_REQUEST);
         return RC_NOK;
     }
