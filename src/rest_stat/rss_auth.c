@@ -20,7 +20,7 @@
 #define UNAUTHORIZED 401
 #define HTTP_OK 200
 #define HDR_LEN 300
-#define AUTH_URL "http://192.168.6.89:8090/v1/auth/token"
+#define AUTH_URL "http://인증서버ip/v1/auth/token"
 
 RT_RESULT rss_tmrEvtFunc(UINT event, VOID *data);
 
